@@ -64,47 +64,40 @@ anomalies.txt (Detected anomalies with scores)
 
 Proposed File Structure
 BehavioralFingerprintSystem/
-│
-├── main.cpp
-│
-├── include/
-│   ├── user_action.h
-│   ├── stack_monitor.h
-│   ├── queue_logger.h
-│   ├── linked_list.h
-│   ├── trie_behavior.h
-│   ├── graph_transition.h
-│   ├── bst_frequency.h
-│   ├── avl_profile.h
-│   ├── hash_profiles.h
-│   ├── heap_alerts.h
-│   ├── disjoint_cluster.h
-│   ├── sorting_algorithms.h
-│   ├── searching_algorithms.h
-│   ├── dynamic_edit.h
-│   ├── traversal_algorithms.h
-│   ├── fingerprint_manager.h
-│   ├── anomaly_detection.h
-│   ├── utils.h
-│   └── file_io.h
-│
-├── src/
-│   ├── (corresponding .cpp files)
-│
-├── data/
-│   ├── user_logs.txt
-│   ├── fingerprints.txt
-│   ├── anomalies.txt
-│
-├── tests/
-│   ├── test_stack.cpp
-│   ├── test_queue.cpp
-│   ├── test_trie.cpp
-│   ├── test_graph.cpp
-│   ├── test_bst.cpp
-│   └── test_manager.cpp
-│
-└── README.md
+| **File / Folder**                |
+| -------------------------------- |
+| `main.cpp`                       |
+| `include/user_action.h`          |
+| `include/stack_monitor.h`        |
+| `include/queue_logger.h`         |
+| `include/linked_list.h`          |
+| `include/trie_behavior.h`        |
+| `include/graph_transition.h`     |
+| `include/bst_frequency.h`        |
+| `include/avl_profile.h`          |
+| `include/hash_profiles.h`        |
+| `include/heap_alerts.h`          |
+| `include/disjoint_cluster.h`     |
+| `include/sorting_algorithms.h`   |
+| `include/searching_algorithms.h` |
+| `include/dynamic_edit.h`         |
+| `include/traversal_algorithms.h` |
+| `include/fingerprint_manager.h`  |
+| `include/anomaly_detection.h`    |
+| `include/utils.h`                |
+| `include/file_io.h`              |
+| `src/`                           |
+| `data/user_logs.txt`             |
+| `data/fingerprints.txt`          |
+| `data/anomalies.txt`             |
+| `tests/test_stack.cpp`           |
+| `tests/test_queue.cpp`           |
+| `tests/test_trie.cpp`            |
+| `tests/test_graph.cpp`           |
+| `tests/test_bst.cpp`             |
+| `tests/test_manager.cpp`         |
+| `README.md`                      |
+
 
 Five-Week Implementation Plan
 Week	Focus Area	Modules / Deliverables
