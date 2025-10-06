@@ -95,50 +95,49 @@ The repository will maintain:
 
 ## 📁 Proposed File Structure
 
+```bash
 BehavioralFingerprintSystem/
 │
 ├── main.cpp
 │
 ├── include/
-│ ├── user_action.h
-│ ├── stack_monitor.h
-│ ├── queue_logger.h
-│ ├── linked_list.h
-│ ├── trie_behavior.h
-│ ├── graph_transition.h
-│ ├── bst_frequency.h
-│ ├── avl_profile.h
-│ ├── hash_profiles.h
-│ ├── heap_alerts.h
-│ ├── disjoint_cluster.h
-│ ├── sorting_algorithms.h
-│ ├── searching_algorithms.h
-│ ├── dynamic_edit.h
-│ ├── traversal_algorithms.h
-│ ├── fingerprint_manager.h
-│ ├── anomaly_detection.h
-│ ├── utils.h
-│ └── file_io.h
+│   ├── user_action.h
+│   ├── stack_monitor.h
+│   ├── queue_logger.h
+│   ├── linked_list.h
+│   ├── trie_behavior.h
+│   ├── graph_transition.h
+│   ├── bst_frequency.h
+│   ├── avl_profile.h
+│   ├── hash_profiles.h
+│   ├── heap_alerts.h
+│   ├── disjoint_cluster.h
+│   ├── sorting_algorithms.h
+│   ├── searching_algorithms.h
+│   ├── dynamic_edit.h
+│   ├── traversal_algorithms.h
+│   ├── fingerprint_manager.h
+│   ├── anomaly_detection.h
+│   ├── utils.h
+│   └── file_io.h
 │
 ├── src/
 │
 ├── data/
-│ ├── user_logs.txt
-│ ├── fingerprints.txt
-│ └── anomalies.txt
+│   ├── user_logs.txt
+│   ├── fingerprints.txt
+│   └── anomalies.txt
 │
 ├── tests/
-│ ├── test_stack.cpp
-│ ├── test_queue.cpp
-│ ├── test_trie.cpp
-│ ├── test_graph.cpp
-│ ├── test_bst.cpp
-│ └── test_manager.cpp
+│   ├── test_stack.cpp
+│   ├── test_queue.cpp
+│   ├── test_trie.cpp
+│   ├── test_graph.cpp
+│   ├── test_bst.cpp
+│   └── test_manager.cpp
 │
 └── README.md
 
-
----
 
 ## 🗓️ Week-by-Week Plan
 
