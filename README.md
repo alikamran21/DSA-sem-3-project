@@ -48,7 +48,7 @@ Data Repository
 
 All behavioral data will be stored as plain text logs and fingerprint records in the /data directory.
 
-Data Format Example
+Data Format Example:
 
 Timestamp	UserID	Action	Process	Duration	Next_Action	Status
 2025-10-06 22:45:31	U101	Open_File	explorer.exe	120ms	Edit_Doc	Normal
