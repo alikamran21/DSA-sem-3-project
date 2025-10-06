@@ -1,0 +1,152 @@
+DELIVERABLE 1: PROJECT PROPOSAL & CONCEPTUAL DESIGN (CLO-3)
+------------------------------------------------------------
+
+PROJECT TITLE: Behavioral Fingerprint-Based Intrusion Detection System (BFIDS)
+TEAM MEMBERS:
+- Ali Kamran
+- Fatima Rahman
+
+COURSE: Data Structures and Algorithms – Semester 3
+---------------------------------------------------
+
+1. PROBLEM DESCRIPTION & PROJECT AIM
+------------------------------------
+Modern cybersecurity often relies on password or token-based authentication,
+which is insufficient against insider threats or compromised accounts.
+Traditional Intrusion Detection Systems (IDS) detect external attacks but
+fail to analyze behavioral patterns that could reveal unauthorized users.
+
+The Behavioral Fingerprint-Based Intrusion Detection System (BFIDS) aims
+to strengthen local security using behavioral biometrics. It learns user
+habits—like typing speed, mouse movements, application switching frequency,
+and idle times—and flags abnormal deviations as possible intrusions.
+
+The project is a console-based C++ simulation focusing on efficient
+data structures and algorithms to analyze, store, and compare behavior logs
+in real-time.
+
+Core Objectives:
+- Model user behavior using measurable digital fingerprints.
+- Detect behavioral deviations using statistical thresholds.
+- Apply DSA concepts (linked lists, queues, trees, searching/sorting).
+- Store and analyze behavioral datasets per session.
+- Efficiently generate detection results and risk scores.
+
+---------------------------------------------------
+
+2. KEY DATA STRUCTURES
+-----------------------
+Struct / Class Objects:
+    Represent each behavior sample (e.g., typing interval, app-switch event).
+
+Linked List:
+    Store continuous time-stamped user actions dynamically.
+
+Queue:
+    Manage real-time event streams such as keystroke or window-switch logs.
+
+Hash Map (unordered_map):
+    Fast lookup of user metrics and stored session data.
+
+Binary Search Tree (BST):
+    Store and retrieve anomaly scores or timestamps efficiently.
+
+File Handling (CSV/Text I/O):
+    Save and load behavioral profiles and detection logs locally.
+
+---------------------------------------------------
+
+3. MAIN ALGORITHMS
+-------------------
+Average & Standard Deviation Analysis:
+    Establish baseline patterns and detect deviations.
+
+Anomaly Scoring Algorithm:
+    Assign weighted scores to deviations in multiple parameters.
+
+Search & Sorting (Binary Search, Quick Sort):
+    Optimize retrieval and ranking of behavioral data.
+
+Pattern Matching / Sliding Window:
+    Compare live session data against stored profiles.
+
+Threshold-Based Decision Logic:
+    Categorize results as “Normal” or “Intrusion Detected.”
+
+---------------------------------------------------
+
+4. DATA FLOW: INPUT, PROCESSING & OUTPUT
+----------------------------------------
+INPUT:
+    - Typing speed, keypress intervals, and app-switch timestamps.
+    - Previous behavioral session data (from saved files).
+
+PROCESSING:
+    1. Data collected into queues and linked lists.
+    2. Statistical calculations and anomaly scoring.
+    3. Threshold comparison for deviation detection.
+    4. Classification into normal or suspicious behavior.
+
+OUTPUT:
+    - Console report showing anomaly scores and detection results.
+    - CSV log files with session summaries and behavior stats.
+
+---------------------------------------------------
+
+5. INTEGRATION OF DSA CONCEPTS
+-------------------------------
+Arrays & Structs:
+    For storing samples and metrics.
+
+Linked Lists:
+    For continuous event streams.
+
+Queues:
+    For real-time input handling.
+
+Trees:
+    For organizing and searching anomaly scores.
+
+Hash Tables:
+    For quick lookup of stored sessions.
+
+File Handling:
+    For persistent behavioral data storage.
+
+Algorithm Analysis:
+    For measuring time and space complexity of operations.
+
+Exception Handling:
+    For managing unexpected input or file errors.
+
+---------------------------------------------------
+
+6. EXPECTED OUTCOME
+--------------------
+- A console-based behavioral intrusion detection prototype.
+- Real-time or simulated analysis and alert generation.
+- Strong demonstration of DSA principles in a cybersecurity context.
+
+---------------------------------------------------
+
+7. TOOLS & ENVIRONMENT
+-----------------------
+Language: C++
+IDE: Visual Studio Code
+Libraries: Standard Template Library (STL), File I/O
+Platform: Windows / Linux (Local execution)
+
+---------------------------------------------------
+
+8. FUTURE IMPROVEMENTS
+-----------------------
+- Integration with system-level APIs for real-time event capture.
+- Adaptive learning for more accurate thresholds.
+- Visualization of behavioral change patterns.
+
+---------------------------------------------------
+
+SUBMISSION DATE: 07/10/2025
+PREPARED BY: Ali Kamran & Fatima Rahman
+DOCUMENT TYPE: Project Proposal & Conceptual Design (CLO-3)
+------------------------------------------------------------

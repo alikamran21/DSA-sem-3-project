@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧠 Behavioral Fingerprint-Based Intrusion Detection System (BFIDS)
+#   Behavioral Fingerprint-Based Intrusion Detection System (BFIDS)
 
 ### Built with Pure C++ | Data Structures & Algorithms | Cybersecurity Project  
 
@@ -19,7 +19,7 @@
 
 ---
 
-## 🧩 Problem Statement
+##  Problem Statement
 
 Modern cybersecurity systems often rely on static signatures or heuristic methods that fail to identify new or insider threats.  
 Every authenticated user exhibits unique behavioral characteristics—such as command sequences, typing intervals, and action transitions—that can be analyzed to detect abnormal activity.
@@ -30,7 +30,7 @@ It will demonstrate how foundational DSA concepts can be applied to a real-world
 
 ---
 
-## 📘 List of Data Structures and Algorithms
+##  List of Data Structures and Algorithms
 
 | **Data Structure / Algorithm** | **Application in Project** |
 |--------------------------------|-----------------------------|
@@ -61,7 +61,7 @@ This ensures comprehensive coverage of almost every data structure and algorithm
 
 ---
 
-## 🎯 Expected Outcomes
+##  Expected Outcomes
 
 | **Outcome** | **Description** |
 |--------------|----------------|
@@ -74,7 +74,7 @@ This ensures comprehensive coverage of almost every data structure and algorithm
 
 ---
 
-## 🗂️ Data Repository
+##  Data Repository
 
 All behavioral data will be stored as plain text logs and fingerprint records in the `/data` directory.
 
@@ -93,7 +93,7 @@ The repository will maintain:
 
 ---
 
-## 📁 Proposed File Structure
+##  Proposed File Structure
 
 ```bash
 BehavioralFingerprintSystem/
@@ -142,7 +142,7 @@ BehavioralFingerprintSystem/
 
 ---
 
-## 🗓️ Week-by-Week Plan
+##  Week-by-Week Plan
 
 | **Week** | **Focus Area** | **Modules / Deliverables** |
 |-----------|----------------|-----------------------------|
@@ -154,7 +154,7 @@ BehavioralFingerprintSystem/
 
 ---
 
-## 🧾 Conclusion
+##  Conclusion
 
 This project integrates almost the complete spectrum of **Data Structures and Algorithms** to develop a **behavioral anomaly detection system in C++**.  
 It is designed to be completed within **five weeks** while maintaining **academic rigor and practical feasibility**.  
