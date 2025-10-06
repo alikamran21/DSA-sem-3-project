@@ -135,5 +135,3 @@ The approach ensures that each DSA concept from the **CS221 course** is applied 
 
 ---
 
-**Repository:**  
-[https://github.com/FatimaRahman/DSA-sem-3-project](https://github.com/FatimaRahman/DSA-sem-3-project)
