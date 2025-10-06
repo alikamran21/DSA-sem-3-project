@@ -138,7 +138,7 @@ BehavioralFingerprintSystem/
 │
 └── README.md
 
-```bash
+```
 
 ---
 
