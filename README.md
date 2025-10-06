@@ -1,7 +1,7 @@
 # Behavioral Fingerprint-Based Intrusion Detection System (BFIDS)
 
 ### Team Members
-**Fatima Rahman**, **Ali Kamran**
+**Fatima Rehman**, **Ali Kamran**
 
 ---
 
