@@ -4,7 +4,7 @@
 
 using namespace std;
 
-string currentTime()
+string currentTime() // To get the current time 
 {
     time_t now = time(0);
     char tNow[80];
@@ -17,12 +17,12 @@ arrayHandler::arrayHandler()
     tasks = new Task[maxTask];
     taskCounter = 0;
 }
-arrayHandler ::~arrayHandler()
+arrayHandler ::~arrayHandler() // destroying hehe
 {
     delete[] tasks;
 }
 
-void arrayHandler::addTask(const string &description)
+void arrayHandler::addTask(const string &description) // To add the tasks in an array 
 {
     if (taskCounter >= maxTask)
     {
@@ -36,7 +36,7 @@ void arrayHandler::addTask(const string &description)
     cout << "Task Added :)" << description << endl;
 }
 
-void arrayHandler::removeTask() {
+void arrayHandler::removeTask() { //remove any task from the array 
     if (taskCounter == 0) {
         cout << "Session Empty NO tasks found.\n";
         return;
@@ -64,7 +64,7 @@ void arrayHandler::removeTask() {
 }
 
 
-void arrayHandler::showTaskList()
+void arrayHandler::showTaskList() // Displaying the lists of tasks done till now
 {
     if (taskCounter == 0)
     {
@@ -81,12 +81,12 @@ void arrayHandler::showTaskList()
     }
     cout << endl;
 }
-int arrayHandler::getTaskCounter()
+int arrayHandler::getTaskCounter() // counting the tasks being done
 {
     return taskCounter;
 }
 
-void arrayHandler::clearTask()
+void arrayHandler::clearTask() // clear all the task history 
 {
     taskCounter = 0;
     cout << "Cleared History. ;)";
