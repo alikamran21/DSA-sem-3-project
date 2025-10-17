@@ -5,30 +5,33 @@
 #include <string>
 using namespace std;
 
-struct Action {
+struct Action
+{
     string user;
     string description;
     string timeStamp;
 };
 
-class circularqueue{
+class circularQueue
+{
 private:
-    Action* buffer;
+    Action *buffer;
     int capacity;
     int front;
     int rear;
     int count;
+
 public:
-    circularqueue(int size = 10);
-    ~circularqueue();
-    void enqueue (const Action& action);
-    void dequeue ();
+    circularQueue(int size = 10);
+    ~circularQueue();
+    void enqueue(const Action &action);
+    void dequeue();
     Action peek() const;
 
-    bool isEmpty();
-    bool isFull();
-    void displayAll();
+    bool isEmpty() const;
+    bool isFull() const;
+    void displayAll() const;
     void clear();
 };
 
-#endif 
+#endif
