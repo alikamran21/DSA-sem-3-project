@@ -1,13 +1,7 @@
 #include "Circular_queue.h"
 #include <iostream>
+#include <ctime>
 
-string currentTime() // To get the current time
-{
-    time_t now = time(0);
-    char tNow[80];
-    strftime(tNow, sizeof(tNow), "%H:%M:%S", localtime(&now));
-    return string(tNow);
-}
 
 circularQueue::circularQueue(int size)
 {
