@@ -1,9 +1,10 @@
 #include "array_handler.h"
 #include "circular_queue.h"
+#include "pointer_utils.h"
 #include "utils.h"
 #include <iostream>
 using namespace std;
-
+using namespace PointerUtils;
 
 int main() {
     cout << "=========================\n";
@@ -53,6 +54,28 @@ int main() {
     recentActions.dequeue();
     recentActions.displayAll();
 
-    cout << "\nCombined test complete.\n";
+
+    cout << "=========================\n";
+    cout << " POINTER UTILS TESTING\n";
+    cout << "=========================\n\n";
+
+    int* numPtr = (int*) allocate(sizeof(int), "int");
+    if (numPtr) {
+        *numPtr = 42;
+        showPointerDetails(numPtr, "numPtr");
+    }
+
+    double* arrPtr = (double*) allocate(5 * sizeof(double), "double[5]");
+    for (int i = 0; i < 5; ++i) arrPtr[i] = i * 1.1;
+
+    showMemoryUsage();
+
+    deallocate(numPtr, "int");
+
+    showPointerDetails(numPtr, "numPtr");
+
+    deallocate(arrPtr, "double[5]");
+    showMemoryUsage();
+
     return 0;
 }
