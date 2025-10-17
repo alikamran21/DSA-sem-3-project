@@ -1,7 +1,5 @@
 #include "Circular_queue.h"
 #include <iostream>
-#include <ctime>
-
 
 circularQueue::circularQueue(int size)
 {

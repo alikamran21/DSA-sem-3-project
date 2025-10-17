@@ -1,7 +1,7 @@
 #include "array_handler.h"
 #include "circular_queue.h"
-#include "pointer_utils.h"
-#include "utils.h"
+#include "Pointer_utils.h"
+#include "Utils.h"
 #include <iostream>
 using namespace std;
 using namespace PointerUtils;

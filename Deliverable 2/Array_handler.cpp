@@ -1,7 +1,7 @@
 #include <iostream>
 #include <ctime>
 #include "Array_handler.h"
-#include "utils.h"
+#include "Utils.h"
 
 using namespace std;
 
