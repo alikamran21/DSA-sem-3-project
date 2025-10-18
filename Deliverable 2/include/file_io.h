@@ -1,6 +1,5 @@
 #ifndef FILE_IO_H
 #define FILE_IO_H
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -22,11 +21,12 @@ public:
     static bool saveAction(const UserAction& action, const string& filename);
     // Reads and displays file contents to the console
     static void readFile(const string& filename);
-    // Saves a linked list of actions as a formatted, sorted table
-    static bool saveActionsToFile(Node* head, const string& filename);
+    // Saves a linked list of actions as a formatted, sorted table.
+    // NOTE: Node*& head allows for memory cleanup within the function.
+    static bool saveActionsToFile(Node*& head, const string& filename);
 };
 
 // Linked list utility: adds a new action node to the end of the list
 void appendNode(Node*& head, const UserAction& action);
 
-#endif
+#endif // FILE_IO_H
