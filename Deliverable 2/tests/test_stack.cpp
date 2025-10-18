@@ -15,24 +15,38 @@ int main() {
 
 
     cout << "\n--- Pushing Actions ---\n";
-    stack.pushAction(a1);
+    stack.pushAction(a1); // Bottom
     stack.pushAction(a2);
-    stack.pushAction(a3);
+    stack.pushAction(a3); // Top
 
     cout << "\n--- Stack Status ---\n";
-    // FIX: Method name changed from peekTop() to peekAction()
     stack.peekAction();
-
-    cout << "\n--- Display All Actions ---\n";
     stack.displayAll();
 
-    cout << "\n--- Popping Actions ---\n";
-    stack.popAction();
-    stack.popAction();
-    stack.popAction();
+    // --- Test Reverse ---
+    cout << "\n--- Reversing Stack (U203 should be bottom) ---\n";
+    stack.reverseStack();
+    stack.displayAll();
+
+    // --- Test Copy ---
+    cout << "\n--- Copying Stack ---\n";
+    StackMonitor stackCopy;
+    stack.copyTo(stackCopy);
+    cout << "Copied Stack Contents:\n";
+    stackCopy.displayAll();
+
+    // --- Test Clear ---
+    cout << "\n--- Clearing Original Stack ---\n";
+    stack.clearStack();
+    cout << "Original Stack Size after clear: " << stack.getSize() << endl;
+
+    cout << "\n--- Popping Actions from Copied Stack (Reverse order) ---\n";
+    stackCopy.popAction(); // Should be U201
+    stackCopy.popAction(); // Should be U202
+    stackCopy.popAction(); // Should be U203
 
     cout << "\n--- Empty Stack Test ---\n";
-    stack.popAction(); // Empty pop test
+    stackCopy.popAction(); // Empty pop test
 
     return 0;
 }
