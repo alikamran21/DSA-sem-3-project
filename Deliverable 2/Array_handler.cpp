@@ -30,15 +30,21 @@ void arrayHandler::addTask(const string &description) // To add the tasks in an 
     cout << "Task Added :)" << description << endl;
 }
 
-void arrayHandler::removeTask() { //remove any task from the array 
+void arrayHandler::removeTask() {
     if (taskCounter == 0) {
-        cout << "Session Empty NO tasks found.\n";
+        cout << "Session Empty. No tasks found.\n";
         return;
     }
 
     int idNo;
     cout << "Enter the Task ID you want to remove: ";
-    cin >> idNo;
+
+    if (!(cin >> idNo)) { 
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "Invalid input! Please enter a number.\n";
+        return;
+    }
 
     if (idNo <= 0 || idNo > taskCounter) {
         cout << "Invalid Task Id provided. :(\n";
@@ -50,12 +56,13 @@ void arrayHandler::removeTask() { //remove any task from the array
 
     for (int i = idNo - 1; i < taskCounter - 1; ++i) {
         tasks[i] = tasks[i + 1];
-        tasks[i].id = i + 1; 
+        tasks[i].id = i + 1;
     }
 
     taskCounter--;
     cout << "Task removed. :)\n";
 }
+
 
 
 void arrayHandler::showTaskList() // Displaying the lists of tasks done till now

@@ -11,6 +11,7 @@
                 "main.cpp",
                 "array_handler.cpp",
                 "circular_queue.cpp",
+                "pointer_utils.cpp",
                 "utils.cpp",
                 "-o",
                 "main.exe"
