@@ -1,7 +1,7 @@
 #include "../include/file_io.h"
 #include <iomanip>
 #include <sstream>
-#include <algorithm> // For std::sort (operates on arrays/pointers)
+#include <algorithm> // For std::sort
 #include <ctime>
 #include <limits>
 #include <cstring>   // For strcpy
@@ -38,7 +38,7 @@ void clearLinkedList(Node*& head) {
 }
 
 // Save all actions (formatted table + sorted)
-bool FileIO::saveActionsToFile(Node*& head, const string& filename) { // Updated signature
+bool FileIO::saveActionsToFile(Node*& head, const string& filename) {
     if (!head) {
         cerr << "Error: No actions to save!\n";
         return false;
@@ -53,13 +53,11 @@ bool FileIO::saveActionsToFile(Node*& head, const string& filename) { // Updated
     }
 
     if (count == 0) {
-        // This case should not happen if the initial check passes, but kept for robustness.
         return false;
     }
 
-    // 2. Dynamically allocate a C-style array
+    // 2. Dynamically allocate a C-style array for sorting
     UserAction* actions = new UserAction[count];
-
 
     // 3. Populate the array (linked list to array conversion)
     temp = head;
@@ -114,7 +112,7 @@ bool FileIO::saveActionsToFile(Node*& head, const string& filename) { // Updated
     delete[] actions;
     clearLinkedList(head);
 
-    cout << "\nActions saved to file '" << filename << "' in table format and sorted (FIFO order).\n";
+    cout << "\n✅ Actions saved to file '" << filename << "' in table format and sorted (FIFO order).\n";
     return true;
 }
 
