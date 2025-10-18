@@ -8,43 +8,21 @@
 
 using namespace std;
 
+struct Node {
+    UserAction data;
+    Node* next;
+    Node(const UserAction& action);
+};
+
 // Handles saving and reading user actions from text files
 class FileIO {
 public:
-    // Save one user action (append to file)
-    static bool saveAction(const UserAction& action, const string& filename) {
-        ofstream file(filename, ios::app);
-        if (!file.is_open()) {
-            cerr << "Error: Unable to open file " << filename << endl;
-            return false;
-        }
-
-        file << action.timestamp << ", "
-             << action.userID << ", "
-             << action.action << ", "
-             << action.processName << ", "
-             << action.duration << ", "
-             << action.nextAction << ", "
-             << action.status << endl;
-
-        file.close();
-        return true;
-    }
-
-    // Read all data from a file and display it (for testing)
-    static void readFile(const string& filename) {
-        ifstream file(filename);
-        if (!file.is_open()) {
-            cerr << "Error: Unable to open file " << filename << endl;
-            return;
-        }
-
-        string line;
-        while (getline(file, line)) {
-            cout << line << endl;
-        }
-        file.close();
-    }
+    static bool saveAction(const UserAction& action, const string& filename);
+    static void readFile(const string& filename);
+    static bool saveActionsToFile(Node* head, const string& filename);
 };
+
+// Linked list utility
+void appendNode(Node*& head, const UserAction& action);
 
 #endif
