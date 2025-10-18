@@ -1,54 +1,41 @@
 #ifndef QUEUE_MONITOR_H
 #define QUEUE_MONITOR_H
-
 #include <iostream>
-#include <queue>
 #include "user_action.h"
 using namespace std;
+
+// Node structure for linked list implementation of queue
+struct QueueNode {
+    UserAction data;
+    QueueNode* next;
+    QueueNode(const UserAction& act) : data(act), next(nullptr) {}
+};
 
 // Class to manage user actions using a queue (FIFO)
 class QueueMonitor {
 private:
-    queue<UserAction> actionQueue;
+    QueueNode* frontNode; // Head of the list (Dequeue end)
+    QueueNode* rearNode;  // Tail of the list (Enqueue end)
+    size_t size;          // Number of actions
 
 public:
-    // Enqueue a new user action
-    void enqueueAction(const UserAction& action) {
-        actionQueue.push(action);
-        cout << "Action Enqueued: " << action.action << endl;
-    }
+    // Constructor initializes an empty queue
+    QueueMonitor() : frontNode(nullptr), rearNode(nullptr), size(0) {}
 
-    // Dequeue the oldest action
-    void dequeueAction() {
-        if (!actionQueue.empty()) {
-            cout << "Action Dequeued: " << actionQueue.front().action << endl;
-            actionQueue.pop();
-        } else {
-            cout << "Queue is empty. No action to dequeue." << endl;
-        }
-    }
+    // Destructor to free all nodes
+    ~QueueMonitor() { clearQueue(); }
 
-    // Peek the front action
-    void peekFront() const {
-        if (!actionQueue.empty()) {
-            const UserAction& front = actionQueue.front();
-            cout << "Front Action -> User: " << front.userID
-                 << ", Action: " << front.action
-                 << ", Status: " << front.status << endl;
-        } else {
-            cout << "Queue is empty." << endl;
-        }
-    }
+    // Core Queue Operations
+    void enqueueAction(const UserAction& action);
+    void dequeueAction();
+    void peekFront() const;
 
-    // Check if empty
-    bool isEmpty() const {
-        return actionQueue.empty();
-    }
+    // Utility
+    void clearQueue();
+    void copyTo(QueueMonitor& target) const;
 
-    // Get queue size
-    size_t getSize() const {
-        return actionQueue.size();
-    }
+    bool isEmpty() const { return frontNode == nullptr; }
+    size_t getSize() const { return size; }
 };
 
 #endif // QUEUE_MONITOR_H
