@@ -1,18 +1,15 @@
 #include "../include/file_io.h"
 #include <iomanip>
-#include <queue>
-#include <stack>
 #include <sstream>
-#include <algorithm>
+#include <algorithm> // For std::sort (operates on arrays/pointers)
+#include <ctime>
+#include <limits>
+#include <cstring>   // For strcpy
 
 using namespace std;
 
-// Linked List Node for UserAction
-struct Node {
-    UserAction data;
-    Node* next;
-    Node(const UserAction& action) : data(action), next(nullptr) {}
-};
+// Node constructor defined here as declared in file_io.h
+Node::Node(const UserAction& action) : data(action), next(nullptr) {}
 
 // Append new node at end
 void appendNode(Node*& head, const UserAction& action) {
@@ -24,60 +21,62 @@ void appendNode(Node*& head, const UserAction& action) {
     temp->next = newNode;
 }
 
-// Convert linked list to array for sorting
-int linkedListToArray(Node* head, UserAction arr[]) {
-    int count = 0;
-    Node* current = head;
-    while (current) {
-        arr[count++] = current->data;
-        current = current->next;
-    }
-    return count;
-}
-
-// Helper function to compare timestamps
+// Helper function to compare timestamps (for std::sort)
 bool compareByTimestamp(const UserAction& a, const UserAction& b) {
     return a.timestamp < b.timestamp;
 }
 
-// Helper function to compare userIDs
-bool compareByUserID(const UserAction& a, const UserAction& b) {
-    return a.userID < b.userID;
+// Utility to clear the linked list nodes
+void clearLinkedList(Node*& head) {
+    Node* current = head;
+    while (current) {
+        Node* next = current->next;
+        delete current;
+        current = next;
+    }
+    head = nullptr; // Sets the caller's pointer to nullptr after deallocation
 }
 
 // Save all actions (formatted table + sorted)
-bool FileIO::saveActionsToFile(Node* head, const string& filename) {
+bool FileIO::saveActionsToFile(Node*& head, const string& filename) { // Updated signature
     if (!head) {
         cerr << "Error: No actions to save!\n";
         return false;
     }
 
-    ofstream file(filename, ios::app);
-    if (!file.is_open()) {
-        cerr << "Error: Unable to open file " << filename << endl;
+    // 1. Count nodes to determine array size
+    int count = 0;
+    Node* temp = head;
+    while (temp) {
+        count++;
+        temp = temp->next;
+    }
+
+    if (count == 0) {
+        // This case should not happen if the initial check passes, but kept for robustness.
         return false;
     }
 
-    // Convert linked list to array for sorting
-    UserAction actions[100]; // static array (no vector)
-    int count = linkedListToArray(head, actions);
+    // 2. Dynamically allocate a C-style array
+    UserAction* actions = new UserAction[count];
 
-    // Ask user how to sort
-    int choice;
-    cout << "\nSort logs by:\n1. Timestamp\n2. User ID\nEnter choice: ";
-    cin >> choice;
 
-    if (choice == 2)
-        sort(actions, actions + count, compareByUserID);
-    else
-        sort(actions, actions + count, compareByTimestamp);
+    // 3. Populate the array (linked list to array conversion)
+    temp = head;
+    for (int i = 0; i < count; ++i) {
+        actions[i] = temp->data;
+        temp = temp->next;
+    }
 
-    // Queue and stack demonstration
-    queue<UserAction> fifo;
-    stack<UserAction> lifo;
-    for (int i = 0; i < count; i++) {
-        fifo.push(actions[i]);
-        lifo.push(actions[i]);
+    // 4. Sort the array using std::sort (from <algorithm>)
+    std::sort(actions, actions + count, compareByTimestamp);
+
+    // 5. Open file and write data
+    ofstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Error: Could not open file '" << filename << "' for writing.\n";
+        delete[] actions; // Clean up array before exiting
+        return false;
     }
 
     // Write formatted table header
@@ -90,16 +89,20 @@ bool FileIO::saveActionsToFile(Node* head, const string& filename) {
          << setw(10) << "Status" << endl;
     file << string(120, '-') << endl;
 
-    // Write actions (FIFO order)
-    while (!fifo.empty()) {
-        UserAction act = fifo.front();
-        fifo.pop();
+    // Write actions directly from the sorted array (FIFO order)
+    for (int i = 0; i < count; ++i) {
+        const auto& act = actions[i];
+        // Convert time_t to readable string
+        char timeStr[25];
+        if (strftime(timeStr, sizeof(timeStr), "%Y-%m-%d %H:%M:%S", localtime(&act.timestamp)) == 0) {
+            strcpy(timeStr, "TIME_ERROR");
+        }
 
-        file << left << setw(25) << act.timestamp
+        file << left << setw(25) << timeStr
              << setw(10) << act.userID
              << setw(20) << act.action
              << setw(20) << act.processName
-             << setw(12) << act.duration
+             << setw(12) << fixed << setprecision(2) << act.duration
              << setw(18) << act.nextAction
              << setw(10) << act.status << endl;
     }
@@ -107,7 +110,11 @@ bool FileIO::saveActionsToFile(Node* head, const string& filename) {
     file << string(120, '=') << "\n\n";
     file.close();
 
-    cout << "\n✅ Actions saved to file '" << filename << "' in table format and sorted.\n";
+    // 6. Deallocate array and linked list
+    delete[] actions;
+    clearLinkedList(head);
+
+    cout << "\nActions saved to file '" << filename << "' in table format and sorted (FIFO order).\n";
     return true;
 }
 
@@ -115,13 +122,35 @@ bool FileIO::saveActionsToFile(Node* head, const string& filename) {
 void FileIO::readFile(const string& filename) {
     ifstream file(filename);
     if (!file.is_open()) {
-        cerr << "Error: Unable to open file " << filename << endl;
+        cerr << "Error: Could not open file '" << filename << "' for reading.\n";
         return;
     }
 
     string line;
-    cout << "\n File Contents:\n";
-    while (getline(file, line))
+    cout << "\nFile Contents:\n";
+    while (getline(file, line)) {
         cout << line << endl;
+    }
+
     file.close();
+}
+
+// Save a single action entry (unformatted, appended)
+bool FileIO::saveAction(const UserAction& action, const string& filename) {
+    ofstream file(filename, ios::app);
+    if (!file.is_open()) {
+        cerr << "Error: Could not open file '" << filename << "' for appending.\n";
+        return false;
+    }
+
+    file << "UserID: " << action.userID
+         << ", Action: " << action.action
+         << ", Process: " << action.processName
+         << ", Duration: " << action.duration
+         << ", Timestamp: " << action.timestamp
+         << ", NextAction: " << action.nextAction
+         << ", Status: " << action.status << "\n";
+
+    file.close();
+    return true;
 }
