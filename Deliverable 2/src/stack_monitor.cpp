@@ -2,35 +2,78 @@
 #include <iostream>
 using namespace std;
 
+// Push new user action (LIFO)
 void StackMonitor::pushAction(const UserAction& action) {
     actionStack.push(action);
-    cout << "Action pushed to stack: " << action.action << endl;
+    cout << "[PUSH] Added: " << action.action << " by " << action.userID << endl;
 }
 
+// Pop most recent action
 void StackMonitor::popAction() {
     if (!actionStack.empty()) {
-        cout << "Popped action: " << actionStack.top().action << endl;
+        cout << "[POP] Removed: " << actionStack.top().action << endl;
         actionStack.pop();
     } else {
-        cout << "Stack is empty.\n";
+        cout << "[POP] Stack empty.\n";
     }
 }
 
+// Peek at top action
 void StackMonitor::peekAction() const {
     if (!actionStack.empty()) {
         const UserAction& top = actionStack.top();
-        cout << "Top -> User: " << top.userID
-             << ", Action: " << top.action
-             << ", Status: " << top.status << endl;
+        cout << "[PEEK] User: " << top.userID
+             << " | Action: " << top.action
+             << " | Status: " << top.status << endl;
     } else {
-        cout << "Stack empty.\n";
+        cout << "[PEEK] Stack empty.\n";
     }
 }
 
-bool StackMonitor::isEmpty() const {
-    return actionStack.empty();
+// Check if stack is empty
+bool StackMonitor::isEmpty() const { return actionStack.empty(); }
+
+// Return number of actions
+size_t StackMonitor::getSize() const { return actionStack.size(); }
+
+// Display all stack contents (non-destructive)
+void StackMonitor::displayAll() const {
+    if (actionStack.empty()) {
+        cout << "[DISPLAY] Stack empty.\n";
+        return;
+    }
+    cout << "\n[DISPLAY] Stack (Top → Bottom):\n";
+    stack<UserAction> temp = actionStack;
+    while (!temp.empty()) {
+        const UserAction& act = temp.top();
+        cout << "User: " << act.userID
+             << " | Action: " << act.action
+             << " | Status: " << act.status << endl;
+        temp.pop();
+    }
+    cout << endl;
 }
 
-size_t StackMonitor::getSize() const {
-    return actionStack.size();
+// Clear all actions
+void StackMonitor::clearStack() {
+    while (!actionStack.empty())
+        actionStack.pop();
+    cout << "[CLEAR] Stack cleared.\n";
+}
+
+// Reverse stack order
+void StackMonitor::reverseStack() {
+    stack<UserAction> reversed;
+    while (!actionStack.empty()) {
+        reversed.push(actionStack.top());
+        actionStack.pop();
+    }
+    actionStack = reversed;
+    cout << "[REVERSE] Stack reversed.\n";
+}
+
+// Copy stack to another StackMonitor
+void StackMonitor::copyTo(StackMonitor& target) const {
+    target.actionStack = actionStack;
+    cout << "[COPY] Stack copied to target monitor.\n";
 }
