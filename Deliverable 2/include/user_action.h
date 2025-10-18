@@ -4,17 +4,18 @@
 #include <ctime>
 using namespace std;
 
-// Structure to represent a single user action entry
+// Defines a structure for tracking a single user action.
 struct UserAction {
-    string userID;        // Unique user ID
-    string action;        // Type of action performed
-    string processName;   // Name of process or app used
-    double duration;      // Duration in milliseconds
-    time_t timestamp;     // Time when action occurred
-    string nextAction;    // Next expected action
-    string status;        // Normal or Deviated
+    string userID;        // ID of the user.
+    string action;        // Type of action (e.g., "Login").
+    string processName;   // Application/process involved.
+    double duration;      // Action duration (double).
+    time_t timestamp;     // Action time (time_t).
+    string nextAction;    // Next expected action.
+    string status;        // Status (e.g., "Normal", "Error").
 
-    // Constructor for initialization
+    // Constructor with default values.
+    // Order: ID, Action, Process, Duration, Timestamp, Next Action, Status.
     UserAction(string id = "", string act = "", string proc = "", double dur = 0.0,
                time_t time = std::time(nullptr), string next = "", string stat = "Normal")
         : userID(id), action(act), processName(proc), duration(dur),
