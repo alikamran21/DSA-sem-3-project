@@ -17,9 +17,9 @@ struct UserAction {
     // Constructor with default values.
     // Order: ID, Action, Process, Duration, Timestamp, Next Action, Status.
     UserAction(string id = "", string act = "", string proc = "", double dur = 0.0,
-               time_t time = std::time(nullptr), string next = "", string stat = "Normal")
+               time_t ts = std::time(nullptr), string next = "", string stat = "Normal")
         : userID(id), action(act), processName(proc), duration(dur),
-          timestamp(time), nextAction(next), status(stat) {}
+          timestamp(ts), nextAction(next), status(stat) {} // Renamed 'time' to 'ts'
 };
 
 #endif // USER_ACTION_H
