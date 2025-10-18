@@ -1,7 +1,7 @@
 #include "../include/file_io.h"
 #include "../include/user_action.h"
 #include <iostream>
-#include <ctime> // Required for time(nullptr)
+#include <ctime>
 
 using namespace std;
 
