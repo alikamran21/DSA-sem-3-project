@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "user_action.h"
+#include "user_action.h" // Requires UserAction constructor parameter for time_t to be renamed (e.g., from 'time' to 'ts')
 
 using namespace std;
 
