@@ -1,68 +1,74 @@
- #include "queue_monitor.h"
+#include "../include/queue_monitor.h"
 #include <iostream>
 using namespace std;
 
-// Linked list node for internal queue tracking
-struct Node {
-    UserAction data;
-    Node* next;
-    Node(const UserAction& action) : data(action), next(nullptr) {}
-};
-
-// Static pointers to manage the linked list queue
-static Node* frontNode = nullptr;
-static Node* rearNode = nullptr;
-
-// Enqueue a new user action (linked list implementation)
+// Enqueue a new user action (insert at rear)
 void QueueMonitor::enqueueAction(const UserAction& action) {
-    Node* newNode = new Node(action);
+    QueueNode* newNode = new QueueNode(action);
     if (rearNode == nullptr) {
+        // First element
         frontNode = rearNode = newNode;
     } else {
         rearNode->next = newNode;
         rearNode = newNode;
     }
-    cout << "Action Enqueued (LL): " << action.action << endl;
+    size++;
+    cout << "[ENQUEUE] Added: " << action.action << endl;
 }
 
-// Dequeue the oldest action
+// Dequeue the oldest action (delete from front)
 void QueueMonitor::dequeueAction() {
     if (frontNode == nullptr) {
-        cout << "Queue is empty. No action to dequeue." << endl;
+        cout << "[DEQUEUE] Queue is empty. No action to dequeue." << endl;
         return;
     }
-    cout << "Action Dequeued (LL): " << frontNode->data.action << endl;
-    Node* temp = frontNode;
+    cout << "[DEQUEUE] Removed: " << frontNode->data.action << endl;
+    QueueNode* temp = frontNode;
     frontNode = frontNode->next;
-    if (frontNode == nullptr)
+    if (frontNode == nullptr) {
+        // Last element removed
         rearNode = nullptr;
+    }
     delete temp;
+    size--;
 }
 
 // Peek at the front action
 void QueueMonitor::peekFront() const {
     if (frontNode == nullptr) {
-        cout << "Queue is empty." << endl;
+        cout << "[PEEK] Queue is empty." << endl;
     } else {
         const UserAction& front = frontNode->data;
-        cout << "Front Action -> User: " << front.userID
+        cout << "[PEEK] Front Action -> User: " << front.userID
              << ", Action: " << front.action
              << ", Status: " << front.status << endl;
     }
 }
 
-// Check if empty
-bool QueueMonitor::isEmpty() const {
-    return frontNode == nullptr;
+// Clear all elements (proper memory deallocation)
+void QueueMonitor::clearQueue() {
+    QueueNode* curr = frontNode;
+    while (curr) {
+        QueueNode* next = curr->next;
+        delete curr;
+        curr = next;
+    }
+    frontNode = rearNode = nullptr;
+    size = 0;
+    cout << "[CLEAR] Queue cleared.\n";
 }
 
-// Get size of the queue
-size_t QueueMonitor::getSize() const {
-    size_t count = 0;
-    Node* temp = frontNode;
-    while (temp) {
-        count++;
-        temp = temp->next;
+// Copy queue to another QueueMonitor (Deep Copy)
+void QueueMonitor::copyTo(QueueMonitor& target) const {
+    if (!target.isEmpty()) {
+        target.clearQueue(); // Ensure target is clean
     }
-    return count;
+
+    QueueNode* curr = frontNode;
+    while (curr != nullptr) {
+        // Enqueuing to the target automatically creates deep copies of the nodes
+        target.enqueueAction(curr->data);
+        curr = curr->next;
+    }
+    cout << "[COPY] Queue copied (deep copy) to target monitor.\n";
 }
