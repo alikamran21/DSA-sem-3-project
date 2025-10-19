@@ -1,3 +1,4 @@
+
 <div align="center">
 
 #   Behavioral Fingerprint-Based Intrusion Detection System (BFIDS)
@@ -137,29 +138,26 @@ BehavioralFingerprintSystem/
 │   └── test_manager.cpp
 │
 └── README.md
-
-```
-
----
-
-##  Week-by-Week Plan
-
-| **Week** | **Focus Area** | **Modules / Deliverables** |
-|-----------|----------------|-----------------------------|
-| Week 1 | Core I/O and session structure | Implement `user_action`, `stack_monitor`, `queue_logger`, and `file_io` |
-| Week 2 | Behavioral modeling | Develop `linked_list`, `trie_behavior`, and `graph_transition` |
-| Week 3 | Fingerprint management | Implement `hash_profiles`, `bst_frequency`, and `avl_profile` |
-| Week 4 | Detection & analysis | Integrate `heap_alerts`, `dynamic_edit`, and `sorting/searching` modules |
-| Week 5 | Testing & reporting | Conduct complexity evaluation, optimize performance, and prepare final report |
+````
 
 ---
 
-##  Conclusion
+## Week-by-Week Plan
 
-This project integrates almost the complete spectrum of **Data Structures and Algorithms** to develop a **behavioral anomaly detection system in C++**.  
-It is designed to be completed within **five weeks** while maintaining **academic rigor and practical feasibility**.  
+| **Week** | **Focus Area**                 | **Modules / Deliverables**                                                    |
+| -------- | ------------------------------ | ----------------------------------------------------------------------------- |
+| Week 1   | Core I/O and session structure | Implement `user_action`, `stack_monitor`, `queue_logger`, and `file_io`       |
+| Week 2   | Behavioral modeling            | Develop `linked_list`, `trie_behavior`, and `graph_transition`                |
+| Week 3   | Fingerprint management         | Implement `hash_profiles`, `bst_frequency`, and `avl_profile`                 |
+| Week 4   | Detection & analysis           | Integrate `heap_alerts`, `dynamic_edit`, and `sorting/searching` modules      |
+| Week 5   | Testing & reporting            | Conduct complexity evaluation, optimize performance, and prepare final report |
+
+---
+
+## Conclusion
+
+This project integrates almost the complete spectrum of **Data Structures and Algorithms** to develop a **behavioral anomaly detection system in C++**.
+It is designed to be completed within **five weeks** while maintaining **academic rigor and practical feasibility**.
 
 The approach ensures that each DSA concept from the **CS221** course is applied in a **real-world cybersecurity context**, demonstrating both **technical depth** and **implementation capability**.
-
----
 
