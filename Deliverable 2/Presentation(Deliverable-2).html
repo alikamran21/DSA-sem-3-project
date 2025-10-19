@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BFIDS Presentation - Deliverable 2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box;}
+    body {font-family:'Open Sans',sans-serif; overflow:hidden;}
+
+    .slide {
+      position:absolute;
+      top:0; left:0;
+      width:100%; height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:4rem 6rem;
+      opacity:0;
+      transform:translateX(80px);
+      transition:opacity 0.8s ease, transform 0.8s ease;
+    }
+    .slide.active {opacity:1; transform:translateX(0); z-index:1;}
+
+    .cream-bg {background:#fdfaf5; color:#0047B6;}
+    .blue-bg {background:#003680; color:#fdfaf5;}
+
+    .hero-text {
+      max-width:50%;
+      padding:2.5rem;
+      background:rgba(253,250,245,0.93);
+      border-left:6px solid #0047B6;
+      box-shadow:0 0 25px rgba(0,0,0,0.15);
+      z-index:1;
+    }
+    .blue-bg .hero-text {
+      background:rgba(253,250,245,0.9);
+      color:#003680;
+    }
+
+    .hero-img {
+      width:40%;
+      height:400px;
+      background-size:contain;
+      background-position:center;
+      background-repeat:no-repeat;
+      filter:grayscale(100%) brightness(0.9) contrast(1.2);
+      border-radius:12px;
+      box-shadow:0 0 25px rgba(0,0,0,0.25);
+    }
+
+    /* --- Cyber themed images --- */
+    .bg1 .hero-img {
+      background-image:url('https://cdn-icons-png.flaticon.com/512/3064/3064197.png');
+    }
+    .bg2 .hero-img {
+      background-image:url('https://cdn-icons-png.flaticon.com/512/483/483361.png');
+    }
+    .bg3 .hero-img {
+      background-image:url('https://cdn-icons-png.flaticon.com/512/4322/4322991.png');
+    }
+    .bg4 .hero-img {
+      background-image:url('https://cdn-icons-png.flaticon.com/512/3135/3135715.png');
+    }
+    .bg5 .hero-img {
+      background-image:url('https://cdn-icons-png.flaticon.com/512/484/484662.png');
+    }
+
+    h1.title-block {
+      font-family:'Montserrat',sans-serif;
+      font-weight:900;
+      font-size:3.8rem; /* reduced from 4.5rem */
+      line-height:1.1;
+      text-transform:uppercase;
+      margin-bottom:1.5rem;
+      color:#0047B6;
+      text-shadow:0 0 6px rgba(0,71,182,0.15);
+    }
+
+    h2 {
+      font-family:'Montserrat',sans-serif;
+      font-weight:800;
+      font-size:3rem;
+      margin-bottom:1.5rem;
+      text-transform:uppercase;
+    }
+
+    .subtitle-block {
+      font-size:1.5rem;
+      margin-bottom:1.2rem;
+      font-weight:400;
+    }
+
+    .content {
+      font-size:1.2rem;
+      line-height:1.9;
+    }
+    .content ul {margin-top:1rem; padding-left:1.5rem;}
+    .content li {margin-bottom:0.6rem;}
+
+    pre {
+      background:rgba(0,0,0,0.6);
+      padding:1rem;
+      border-radius:8px;
+      text-align:left;
+      font-family:monospace;
+      color:#fff;
+      overflow:auto;
+      font-size:1rem;
+    }
+
+    .nav {
+      position:fixed;
+      bottom:2rem;
+      right:2rem;
+      display:flex;
+      gap:1rem;
+      z-index:10;
+    }
+    .nav button {
+      background:transparent;
+      border:2px solid currentColor;
+      color:inherit;
+      padding:0.8rem 1.2rem;
+      font-size:1.5rem;
+      cursor:pointer;
+      border-radius:50%;
+      transition:all 0.3s ease;
+    }
+    .nav button:hover {
+      background:currentColor;
+      color:inherit;
+      filter:brightness(1.5);
+    }
+
+    @media(max-width:768px){
+      .slide {flex-direction:column; padding:2rem;}
+      .hero-text {max-width:100%; margin-bottom:2rem;}
+      .hero-img {width:80%; height:250px;}
+      h1.title-block {font-size:2.5rem;}
+      h2 {font-size:2rem;}
+      .content {font-size:1rem;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- Slide 1 -->
+<section class="slide cream-bg bg1 active">
+  <div class="hero-text">
+    <h1 class="title-block">Behavioral<br>Anomaly Detection</h1>
+    <div class="subtitle-block">Deliverable 2: Core Data Structures for Security Monitoring</div>
+    <div class="content">
+      <p><strong>Team:</strong> Fatima Rehman & Ali Kamran</p>
+      <p><strong>Date:</strong> October 19, 2025</p>
+      <p><strong>Key Takeaway:</strong> A data-structure-driven foundation enabling behavioral fingerprinting and anomaly detection.</p>
+    </div>
+  </div>
+  <div class="hero-img"></div>
+</section>
+
+<!-- Slide 2 -->
+<section class="slide blue-bg bg2">
+  <div class="hero-text">
+    <h2>Problem Statement</h2>
+    <div class="content">
+      <p>Modern cybersecurity systems rely on static signatures that miss insider threats. Behavioral anomalies such as unusual sequences or abnormal timing can indicate malicious activity.</p>
+      <ul>
+        <li>Timing Anomalies: abnormal process execution speeds.</li>
+        <li>Sequence Anomalies: unusual command or access patterns.</li>
+        <li>Insider Threats: hidden in legitimate behavior.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="hero-img"></div>
+</section>
+
+<!-- Slide 3 -->
+<section class="slide cream-bg bg3">
+  <div class="hero-text">
+    <h2>Solution Architecture</h2>
+    <div class="content">
+      <ul>
+        <li><strong>Array_Handler:</strong> Baseline behavior tracking.</li>
+        <li><strong>Circular_Queue:</strong> Real-time sequence monitoring.</li>
+        <li><strong>Linked Lists:</strong> Session logging and playback.</li>
+        <li><strong>Pointer_Utils & File_IO:</strong> Stability and persistence.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="hero-img"></div>
+</section>
+
+<!-- Slide 4 -->
+<section class="slide blue-bg bg4">
+  <div class="hero-text">
+    <h2>Code Integration</h2>
+    <div class="content">
+      <pre>
+if (dataTransfer > dailyThreshold) {
+    logAnomaly();
+    alertAdmin();
+    haltWriteOps();
+}
+      </pre>
+      <p>Modules like StackMonitor, QueueMonitor, ArrayHandler, and PointerUtils work together to detect and log anomalies early.</p>
+    </div>
+  </div>
+  <div class="hero-img"></div>
+</section>
+
+<!-- Slide 5 -->
+<section class="slide cream-bg bg5">
+  <div class="hero-text">
+    <h2>Conclusion & Future Work</h2>
+    <div class="content">
+      <ul>
+        <li>Strong, stable data structure core for anomaly detection.</li>
+        <li>Next: Integrate hash tables and trees for advanced fingerprinting.</li>
+        <li>Goal: Precise, real-time insider threat detection.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="hero-img"></div>
+</section>
+
+<!-- Navigation -->
+<div class="nav">
+  <button onclick="prevSlide()">&#10094;</button>
+  <button onclick="nextSlide()">&#10095;</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  function showSlide(i){
+    slides.forEach(s=>s.classList.remove('active'));
+    slides[i].classList.add('active');
+  }
+  function nextSlide(){
+    current=(current+1)%slides.length;
+    showSlide(current);
+  }
+  function prevSlide(){
+    current=(current-1+slides.length)%slides.length;
+    showSlide(current);
+  }
+</script>
+
+</body>
+</html>
