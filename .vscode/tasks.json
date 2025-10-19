@@ -8,18 +8,37 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "main.cpp",
-                "array_handler.cpp",
-                "circular_queue.cpp",
-                "pointer_utils.cpp",
-                "utils.cpp",
+                // Main file (assuming it is in the current directory, i.e., Deliverable 2)
+                "main.cpp", 
+                
+                // --- Ali's Source Files ---
+                "Ali/Array_handler.cpp",
+                "Ali/Circular_queue.cpp",
+                "Ali/pointer_utils.cpp",
+                "Ali/utils.cpp",
+                
+                // --- Fatima's Source Files ---
+                "Fatima/src/linked_list.cpp",
+                "Fatima/src/queue_monitor.cpp",
+                "Fatima/src/stack_monitor.cpp",
+                "Fatima/src/file_io.cpp",
+
+                // --- Include Paths for Headers (Crucial fix) ---
+                "-I",
+                "Ali",
+                "-I",
+                "Fatima/include",
+
                 "-o",
                 "main.exe"
             ],
             "options": {
-                "cwd": "${fileDirname}"
+                // Assuming you run this task from the Deliverable 2 folder
+                "cwd": "${fileDirname}" 
             },
-            "problemMatcher": ["$gcc"],
+            "problemMatcher": [
+                "$gcc"
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
