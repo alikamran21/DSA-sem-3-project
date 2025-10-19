@@ -12,22 +12,22 @@
                 "main.cpp", 
                 
                 // --- Ali's Source Files ---
-                "Ali/Array_handler.cpp",
-                "Ali/Circular_queue.cpp",
-                "Ali/pointer_utils.cpp",
-                "Ali/utils.cpp",
+                "Test-A/Array_handler.cpp",
+                "Test-A/Circular_queue.cpp",
+                "Test-A/pointer_utils.cpp",
+                "Test-A/utils.cpp",
                 
                 // --- Fatima's Source Files ---
-                "Fatima/src/linked_list.cpp",
-                "Fatima/src/queue_monitor.cpp",
-                "Fatima/src/stack_monitor.cpp",
-                "Fatima/src/file_io.cpp",
+                "Test-F/src/linked_list.cpp",
+                "Test-F/src/queue_monitor.cpp",
+                "Test-F/src/stack_monitor.cpp",
+                "Test-F/src/file_io.cpp",
 
                 // --- Include Paths for Headers (Crucial fix) ---
                 "-I",
                 "Ali",
                 "-I",
-                "Fatima/include",
+                "Test-F/include",
 
                 "-o",
                 "main.exe"
