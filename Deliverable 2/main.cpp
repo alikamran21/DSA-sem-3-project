@@ -67,8 +67,8 @@ int main() {
     q.peekFront();     // Shows U102
     q.clearQueue();
 
-    // --- C. LinkedList Test (Doubly Linked List) ---
-    cout << "\n--- C. Doubly Linked List Test ---\n";
+    // --- C. LinkedList Test ---
+    cout << "\n--- C. Linked List Test ---\n";
     LinkedList list;
     UserAction fl1("U301", "Start_App", "browser.exe", 10.0, now - 120, "Load_Page", "Success");
     UserAction fl2("U302", "Stop_App", "browser.exe", 5.0, now, "-", "Closed");
