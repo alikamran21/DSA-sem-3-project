@@ -1,7 +1,7 @@
 Timestamp                UserID    Action              Process             Duration    Next_Action       Status    
 ------------------------------------------------------------------------------------------------------------------------
-2025-10-21 11:10:08      U101      Open_File           editor.exe          120.50      Edit_Doc          Normal    
-2025-10-21 11:15:08      U102      Save_File           editor.exe          80.25       Close_File        Normal    
-2025-10-21 11:20:18      U104      Network_Call        cmd.exe             1.20        Exit              Deviated  
+2025-10-28 16:46:45      U101      Open_File           editor.exe          120.50      Edit_Doc          Normal    
+2025-10-28 16:51:45      U102      Save_File           editor.exe          80.25       Close_File        Normal    
+2025-10-28 16:56:55      U104      Network_Call        cmd.exe             1.20        Exit              Deviated  
 ========================================================================================================================
 
