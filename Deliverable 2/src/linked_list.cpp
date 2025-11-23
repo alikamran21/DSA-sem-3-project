@@ -136,4 +136,15 @@ void LinkedList::traverseCircular(size_t cycles) const {
     } while (temp && count < cycles * size);
 
     cout << "...\n";
+    void LinkedList::copyToArray(UserAction* arr) const {
+    ListNode* temp = head;
+    size_t i = 0;
+
+    while (temp != nullptr) {
+        arr[i] = temp->data;
+        temp = temp->next;
+        i++;
+    }
+}
+
 }
