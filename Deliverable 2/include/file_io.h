@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string>
 #include "user_action.h" // Requires UserAction constructor parameter for time_t to be renamed (e.g., from 'time' to 'ts')
-
+#include "linked_list.h"
 using namespace std;
 
 // Node structure for the basic singly linked list used internally by FileIO.
