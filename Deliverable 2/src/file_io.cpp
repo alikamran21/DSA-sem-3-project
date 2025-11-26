@@ -140,6 +140,36 @@ bool FileIO::saveAction(const UserAction& action, const string& filename) {
         cerr << "Error: Could not open file '" << filename << "' for appending.\n";
         return false;
     }
+bool FileIO::loadActionsFromFile(const string& filename, LinkedList& list) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Error opening input log file.\n";
+        return false;
+    }
+
+    string line;
+    while (getline(file, line)) {
+        if (line.empty()) continue;
+
+        // Very simple extraction
+        UserAction ua;
+        string ignore;
+
+        stringstream ss(line);
+        ss >> ignore >> ua.userID;
+        ss >> ignore >> ua.action;
+        ss >> ignore >> ua.processName;
+        ss >> ignore >> ua.duration;
+        ss >> ignore >> ua.timestamp;
+        ss >> ignore >> ua.nextAction;
+        ss >> ignore >> ua.status;
+
+        list.insertAtEnd(ua);
+    }
+
+    return true;
+}
+
 
     file << "UserID: " << action.userID
          << ", Action: " << action.action
