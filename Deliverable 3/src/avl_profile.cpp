@@ -4,6 +4,8 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <functional>
+
 using namespace std;
 
 /*
