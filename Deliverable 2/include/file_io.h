@@ -24,10 +24,11 @@ public:
     // Saves a linked list of actions as a formatted, sorted table.
     // NOTE: Node*& head allows for memory cleanup within the function.
     static bool saveActionsToFile(Node*& head, const string& filename);
+    static bool loadActionsFromFile(const string& filename, LinkedList& list);
 };
 
 // Linked list utility: adds a new action node to the end of the list
 void appendNode(Node*& head, const UserAction& action);
-static bool loadActionsFromFile(const string& filename, LinkedList& list);
+
 
 #endif // FILE_IO_H
