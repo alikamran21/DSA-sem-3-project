@@ -1,5 +1,5 @@
-#include "../include/linked_list.h"        // From Deliverable 2
-#include "../include/file_io.h"           // From Deliverable 2
+#include "../../Deliverable 2/include/linked_list.h"        // From Deliverable 2
+#include "../../Deliverable 2/include/file_io.h"           // From Deliverable 2
 
 #include "../include/sorting_algorithms.h" // From Deliverable 3
 #include "../include/avl_profile.h"        // From Deliverable 3
