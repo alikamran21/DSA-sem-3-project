@@ -2,6 +2,7 @@
 #define A24A5966_2E58_4AB3_BF14_A5239420D819
 
 #include <string>
+#include <functional>
 #include "UserActionProfile.h"
 
 /*
