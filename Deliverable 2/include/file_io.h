@@ -28,5 +28,6 @@ public:
 
 // Linked list utility: adds a new action node to the end of the list
 void appendNode(Node*& head, const UserAction& action);
+static bool loadActionsFromFile(const string& filename, LinkedList& list);
 
 #endif // FILE_IO_H
