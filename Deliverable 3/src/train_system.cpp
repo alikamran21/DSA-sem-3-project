@@ -40,7 +40,9 @@ int main(int argc, char* argv[]) {
 
     // Converting list into a plain array for sorting
     int count = 0;
-    UserAction* arr = list.toArray(count);
+    UserAction* arr = new UserAction[count];
+     list.copyToArray(arr);
+
 
     if (!arr || count == 0) {
         cerr << "Failed to convert list to array.\n";
