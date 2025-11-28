@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
     cout << "Loaded " << list.getSize() << " actions.\n";
 
     // Converting list into a plain array for sorting
-    int count = 0;
+    int count = list.getSize();
     UserAction* arr = new UserAction[count];
      list.copyToArray(arr);
 
