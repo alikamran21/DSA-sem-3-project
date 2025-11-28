@@ -1,0 +1,42 @@
+1. Compile the new tools:
+
+g++ src/bio_trainer.cpp src/avl_profile.cpp -I include -o bio_trainer
+g++ src/bio_monitor.cpp src/avl_profile.cpp -I include -o bio_monitor
+
+2. Train (Do this first):
+
+Run: sudo ./bio_trainer
+
+Type normally for 30 seconds.
+
+Move your mouse around in circles.
+
+Press ESC to stop.
+
+Result: It creates bio_fingerprints.csv.
+
+3. Monitor (The Test):
+
+Run: sudo ./bio_monitor
+
+Type normally: It should say [OK] Key match.
+
+Simulate an Intruder:
+
+Start mashing keys incredibly fast (like a script).
+
+Or type painfully slow (like someone who doesn't know the layout).
+
+Yank the mouse violently.
+
+Result: The Threat Level will rise. Once it hits 20, the VM shuts down.
+
+
+
+cat /proc/bus/input/devices
+
+Look for "Keyboard": Note the H: Handlers=sysrq kbd event<X> (e.g., event1).
+
+Look for "Mouse": Note the H: Handlers=mouse0 event<Y> (e.g., event2).
+
+Example: If Keyboard is event1 and Mouse is event2, remember those numbers.
