@@ -3,33 +3,40 @@
 
 #include <string>
 #include <iostream>
+
+// Include the AVL Profile header.
+// This path assumes hash_profiles is in 'Test-A' and avl_profile is in 'Test-F/include'
+#include "../Test-F/include/avl_profile.h"
+
 using namespace std;
 
-// #include "add avl tree filew name"
-
-class hashNode
-{
-
+class hashNode {
 public:
     string userId;
-    avlProfile *profilePtr; // to be fixed on avl file being added
-    hashNode *next;
-    hashNode(const string &id, avlProfile &ptr) : userId(id), profilePtr(ptr), next(nullptr) {} // to be fixed on avl file being added
+    AVLProfile* profilePtr; // Corrected type: AVLProfile*
+    hashNode* next;
+
+    // Constructor: Takes a pointer to an AVLProfile
+    hashNode(const string& id, AVLProfile* ptr) 
+        : userId(id), profilePtr(ptr), next(nullptr) {}
 };
 
-class hashTable
-{
+class hashTable {
 private:
-    hashTable **table;
+    hashNode** table; // Corrected: Array of pointers to hashNodes
     int capacity;
-    int hashFunction(const string &key) const;
+    
+    int hashFunction(const string& key) const;
 
 public:
     hashTable(int size = 20);
     ~hashTable();
     
-    void addProfile(const string &userId, AvlProfile *profilePtr);
-    AvlProfile *getProfile(const string &userId); // to be corrected on avlfile being made
+    // Add a profile pointer for a specific User ID
+    void addProfile(const string& userId, AVLProfile* profilePtr);
+    
+    // Retrieve the profile pointer
+    AVLProfile* getProfile(const string& userId);
 
     void displayTable() const;
 };
