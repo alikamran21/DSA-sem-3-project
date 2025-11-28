@@ -24,7 +24,7 @@ void LinkedList::insertAtEnd(const UserAction& action) {
         tail = newNode;
     }
     size++;
-    cout << "Inserted at end: " << action.action << endl;
+    // cout << "Inserted at end: " << action.action << endl; 
 }
 
 // Insert new action at beginning
@@ -38,7 +38,7 @@ void LinkedList::insertAtBeginning(const UserAction& action) {
         head = newNode;
     }
     size++;
-    cout << "Inserted at beginning: " << action.action << endl;
+    // cout << "Inserted at beginning: " << action.action << endl;
 }
 
 // Delete node from end
@@ -136,6 +136,8 @@ void LinkedList::traverseCircular(size_t cycles) const {
     } while (temp && count < cycles * size);
 
     cout << "...\n";
+}
+
 void LinkedList::copyToArray(UserAction* arr) const {
     ListNode* temp = head;
     size_t i = 0;
@@ -145,6 +147,4 @@ void LinkedList::copyToArray(UserAction* arr) const {
         temp = temp->next;
         i++;
     }
-}
-
 }
