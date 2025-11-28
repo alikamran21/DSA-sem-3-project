@@ -33,7 +33,7 @@ public:
     void displayBackward() const;
     bool isEmpty() const;
     size_t getSize() const;
-
+    void copyToArray(UserAction* arr) const;
     // Circular Linked List demo
     void makeCircular();
     void traverseCircular(size_t cycles = 1) const;
