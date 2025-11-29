@@ -1,88 +1,67 @@
 #include <iostream>
-#include <fstream>
 #include <vector>
-#include <linux/input.h>
-#include <fcntl.h>
+#include <termios.h> 
 #include <unistd.h>
-#include <cmath>
 #include <chrono>
-#include "../include/avl_profile.h" // Reusing your AVL Tree!
+#include "avl_profile.h"
 
 using namespace std;
 using namespace std::chrono;
 
-// --- CONFIGURATION: CHANGE THESE IDS TO MATCH YOUR VM ---
-const char* KEYBOARD_DEV = "/dev/input/event2"; // CHECK YOUR ID!
-const char* MOUSE_DEV    = "/dev/input/event3"; // CHECK YOUR ID!
-
-// Helper struct for mouse movement
-struct MouseState {
-    int x = 0;
-    int y = 0;
-};
+// FUNCTION: Set Terminal to "Raw Mode" (Reads keys instantly, no Enter needed)
+void setRawMode(bool enable) {
+    static struct termios oldt, newt;
+    if (enable) {
+        tcgetattr(STDIN_FILENO, &oldt);
+        newt = oldt;
+        newt.c_lflag &= ~(ICANON | ECHO); // Disable buffering and echo
+        tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    } else {
+        tcsetattr(STDIN_FILENO, TCSANOW, &oldt); // Restore normal settings
+    }
+}
 
 int main() {
-    cout << "--- BIOMETRIC TRAINING PHASE ---" << endl;
-    cout << "Opening devices (Run with sudo!)..." << endl;
-
-    int kbd_fd = open(KEYBOARD_DEV, O_RDONLY | O_NONBLOCK);
-    int mouse_fd = open(MOUSE_DEV, O_RDONLY | O_NONBLOCK);
-
-    if (kbd_fd == -1 || mouse_fd == -1) {
-        cerr << "Error: Could not open devices. Did you run with 'sudo'? Did you update event IDs?" << endl;
-        return 1;
-    }
-
     AVLProfile profile;
-    struct input_event ev;
+    cout << "--- KEYSTROKE DYNAMICS TRAINER (SSH COMPATIBLE) ---" << endl;
+    cout << "System will learn your typing speed." << endl;
+    cout << ">>> TYPE NORMALLY. Press 'ESC' (twice) to finish." << endl;
+
+    setRawMode(true); // Enable biometrics mode
+
+    char c;
     auto lastKeyTime = high_resolution_clock::now();
-    
-    cout << ">>> TRAINER ACTIVE. PLEASE TYPE AND MOVE MOUSE NORMALLY." << endl;
-    cout << ">>> (Press 'ESC' to finish training)" << endl;
+    bool running = true;
 
-    bool training = true;
-    while (training) {
-        // 1. READ KEYBOARD
-        while (read(kbd_fd, &ev, sizeof(ev)) > 0) {
-            if (ev.type == EV_KEY && ev.value == 1) { // Key Press
-                auto now = high_resolution_clock::now();
-                double latency = duration_cast<milliseconds>(now - lastKeyTime).count();
-                lastKeyTime = now;
+    while (running) {
+        c = getchar(); // Read 1 char immediately
 
-                if (ev.code == KEY_ESC) {
-                    training = false;
-                    break;
-                }
-
-                // Ignore huge pauses (idle time)
-                if (latency < 2000) { 
-                    cout << "[KEY] Latency: " << latency << "ms" << endl;
-                    profile.insertOrUpdate("Keystroke_Dynamics", latency);
-                }
-            }
+        // Check for ESC (ASCII 27)
+        if (c == 27) { 
+            running = false;
+            break; 
         }
 
-        // 2. READ MOUSE
-        while (read(mouse_fd, &ev, sizeof(ev)) > 0) {
-            if (ev.type == EV_REL) { // Relative movement
-                // We treat mouse movement 'magnitude' as the value to profile
-                // This is a simplified metric for mouse speed/jitter
-                double movement = abs(ev.value);
-                if (movement > 0) {
-                     // cout << "[MOUSE] Move: " << movement << endl;
-                     profile.insertOrUpdate("Mouse_Dynamics", movement);
-                }
-            }
+        auto now = high_resolution_clock::now();
+        double latency = duration_cast<milliseconds>(now - lastKeyTime).count();
+        lastKeyTime = now;
+
+        // Filter out long pauses (thinking time) -> Only capture typing rhythm
+        if (latency < 1000) {
+            // Print \r to return to start of line since we disabled standard output
+            cout << "Key detected. Latency: " << latency << "ms\r" << endl;
+            profile.insertOrUpdate("Typing_Speed", latency);
         }
-        
-        usleep(1000); // Prevent CPU hogging
     }
 
-    cout << "\nTraining Complete. Saving Profile..." << endl;
-    profile.exportToCSV("bio_fingerprints.csv");
-    cout << "Saved to 'bio_fingerprints.csv'." << endl;
+    setRawMode(false); // Restore terminal so you can see what you type again
 
-    close(kbd_fd);
-    close(mouse_fd);
+    cout << "\nTraining Complete." << endl;
+    if (profile.exportToCSV("bio_fingerprints.csv")) {
+        cout << ">> Biometric Profile saved to 'bio_fingerprints.csv'" << endl;
+    } else {
+        cerr << ">> Error saving file!" << endl;
+    }
+
     return 0;
 }
