@@ -50,7 +50,7 @@ g++ src/bio_monitor.cpp src/avl_profile.cpp -o bio_monitor
 
 ---
 
-## 🚀 Usage Guide
+## Usage Guide
 
 ### Phase 1: Training Biometrics
 
