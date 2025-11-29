@@ -18,7 +18,7 @@ This folder contains the source code for the training subsystems and the live bi
 
 ### Prerequisites
 * **Folder:** Copy only the `BFIDS_training` into the linix
-* **OS:** Linux (Required for `bio_trainer` and `bio_monitor` due to `<linux/input.h>`).
+* **OS:** Linux (Required for `bio_trainer` and `bio_monitor` due to `<termios.h>`).
 * **Permissions:** `sudo` access is required to read hardware events from `/dev/input/`.
 
 ### 1. Compile the Log Trainer (System Activity)
