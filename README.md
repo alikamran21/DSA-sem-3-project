@@ -16,7 +16,7 @@
 
 # DSA-sem-3-project  
 **Title:** Behavioral Fingerprint-Based Intrusion Detection System (BFIDS)  
-**Team:** (Fatima Rahman, Ali Kamran)
+**Team:** (Fatima Rehman, Ali Kamran)
 
 ---
 
