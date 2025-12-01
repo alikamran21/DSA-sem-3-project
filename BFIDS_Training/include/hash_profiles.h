@@ -6,7 +6,7 @@
 
 // Include the AVL Profile header.
 // This path assumes hash_profiles is in 'Test-A' and avl_profile is in 'Test-F/include'
-#include "../Test-F/include/avl_profile.h"
+#include "avl_profile.h"
 
 using namespace std;
 
