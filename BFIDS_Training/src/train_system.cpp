@@ -1,8 +1,8 @@
 #include "linked_list.h"        // From Deliverable 2
 #include "file_io.h"           // From Deliverable 2
 
-#include "../include/sorting_algorithms.h" // From Deliverable 3
-#include "../include/avl_profile.h"        // From Deliverable 3
+#include "sorting_algorithms.h" // From Deliverable 3
+#include "avl_profile.h"        // From Deliverable 3
 
 #include <iostream>
 #include <string>

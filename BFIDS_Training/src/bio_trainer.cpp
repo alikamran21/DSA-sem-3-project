@@ -6,7 +6,13 @@
 #include <unistd.h>
 #include <cmath>
 #include <chrono>
-#include "../include/avl_profile.h" // Reusing your AVL Tree!
+
+// --- EXISTING INCLUDES ---
+#include "avl_profile.h"
+
+// --- NEW INTEGRATIONS (Update paths as needed for your compiler) ---
+#include "queue_monitor.h"
+#include "stack_monitor.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -14,12 +20,6 @@ using namespace std::chrono;
 // --- CONFIGURATION: CHANGE THESE IDS TO MATCH YOUR VM ---
 const char* KEYBOARD_DEV = "/dev/input/event2"; // CHECK YOUR ID!
 const char* MOUSE_DEV    = "/dev/input/event3"; // CHECK YOUR ID!
-
-// Helper struct for mouse movement
-struct MouseState {
-    int x = 0;
-    int y = 0;
-};
 
 int main() {
     cout << "--- BIOMETRIC TRAINING PHASE ---" << endl;
@@ -34,6 +34,12 @@ int main() {
     }
 
     AVLProfile profile;
+
+    // --- INTEGRATION: Initialize Monitors ---
+    QueueMonitor eventQueue;   // Buffers raw events
+    StackMonitor eventStack;   // Stores history of events
+    cout << "[System] Event Queue and Stack Monitors initialized." << endl;
+
     struct input_event ev;
     auto lastKeyTime = high_resolution_clock::now();
     
@@ -58,6 +64,12 @@ int main() {
                 if (latency < 2000) { 
                     cout << "[KEY] Latency: " << latency << "ms" << endl;
                     profile.insertOrUpdate("Keystroke_Dynamics", latency);
+
+                    // --- INTEGRATION: Log to Queue and Stack ---
+                    // Creating a UserAction wrapper for the raw event
+                    UserAction act("TrainerUser", "KeyPress", "Keyboard", latency);
+                    eventQueue.enqueueAction(act); // Add to processing queue
+                    eventStack.pushAction(act);    // Add to history stack
                 }
             }
         }
@@ -65,12 +77,15 @@ int main() {
         // 2. READ MOUSE
         while (read(mouse_fd, &ev, sizeof(ev)) > 0) {
             if (ev.type == EV_REL) { // Relative movement
-                // We treat mouse movement 'magnitude' as the value to profile
-                // This is a simplified metric for mouse speed/jitter
                 double movement = abs(ev.value);
                 if (movement > 0) {
                      // cout << "[MOUSE] Move: " << movement << endl;
                      profile.insertOrUpdate("Mouse_Dynamics", movement);
+
+                     // --- INTEGRATION: Log to Queue and Stack ---
+                     UserAction act("TrainerUser", "MouseMove", "Mouse", movement);
+                     eventQueue.enqueueAction(act);
+                     eventStack.pushAction(act);
                 }
             }
         }
@@ -78,7 +93,13 @@ int main() {
         usleep(1000); // Prevent CPU hogging
     }
 
-    cout << "\nTraining Complete. Saving Profile..." << endl;
+    cout << "\nTraining Complete." << endl;
+    
+    // --- INTEGRATION: Show stats ---
+    cout << "Total Events Queued: " << eventQueue.getSize() << endl;
+    cout << "Total Events Stacked: " << eventStack.getSize() << endl;
+
+    cout << "Saving Profile..." << endl;
     profile.exportToCSV("bio_fingerprints.csv");
     cout << "Saved to 'bio_fingerprints.csv'." << endl;
 
