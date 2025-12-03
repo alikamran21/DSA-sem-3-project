@@ -3,6 +3,7 @@
 echo "--- Compiling BFIDS System for Ubuntu (SSH) ---"
 
 # 1. Compile the Log Trainer (Historical Data)
+# FIXED: Added src/btree_index.cpp
 echo "[1/3] Compiling Log Trainer..."
 g++ -I include src/train_system.cpp \
     src/file_io.cpp \
@@ -10,20 +11,22 @@ g++ -I include src/train_system.cpp \
     src/avl_profile.cpp \
     src/sorting_algorithms.cpp \
     src/utils.cpp \
+    src/btree_index.cpp \
     -o train_system
 
 # 2. Compile the Biometric Trainer (Live Training)
-# Includes Stack and Queue monitors
+# FIXED: Added src/btree_index.cpp
 echo "[2/3] Compiling Biometric Trainer..."
 g++ -I include src/bio_trainer.cpp \
     src/avl_profile.cpp \
     src/queue_monitor.cpp \
     src/stack_monitor.cpp \
     src/utils.cpp \
+    src/btree_index.cpp \
     -o bio_trainer
 
 # 3. Compile the Biometric Monitor (Live Security)
-# FIXED: Added anomaly_heap.cpp and process_trie.cpp which were missing
+# FIXED: Added src/btree_index.cpp
 echo "[3/3] Compiling Biometric Monitor..."
 g++ -I include src/bio_monitor.cpp \
     src/avl_profile.cpp \
@@ -34,6 +37,7 @@ g++ -I include src/bio_monitor.cpp \
     src/graph_transition.cpp \
     src/anomaly_heap.cpp \
     src/process_trie.cpp \
+    src/btree_index.cpp \
     -o bio_monitor
 
 echo "--- Compilation Complete! ---"
