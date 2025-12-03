@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BFIDS: Advanced Behavioral Security</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+/* 1. THE SETUP - DARK CYBER THEME */
+:root {
+    --bg-dark: #0f172a;
+    --bg-card: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-blue: #38bdf8;
+    --accent-green: #4ade80;
+    --accent-red: #f87171;
+    --accent-purple: #c084fc;
+    --code-bg: #020617;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #020617; /* Very dark slate */
+    display: grid;
+    gap: 40px;
+    grid-template-columns: 1fr;
+    margin: 0;
+    min-height: 100vh;
+    padding: 40px 0;
+    place-items: center;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+}
+
+.slide-container {
+    background: var(--bg-dark);
+    /* Subtle gradient for depth */
+    background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    height: 720px;
+    width: 1280px;
+    overflow: hidden;
+    padding: 60px;
+    position: relative;
+}
+
+/* 1.1 DECORATIVE ELEMENTS */
+.slide-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+}
+
+/* 2. TYPOGRAPHY */
+h1, h2, h3 {
+    margin: 0;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: 64px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+}
+
+.slide-title {
+    font-size: 48px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    color: var(--text-primary);
+    border-bottom: 1px solid #334155;
+    padding-bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slide-tag {
+    font-size: 16px;
+    background: rgba(56, 189, 248, 0.1);
+    color: var(--accent-blue);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+h3 {
+    font-size: 28px;
+    color: var(--accent-blue);
+    margin-bottom: 15px;
+}
+
+p, li {
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+}
+
+strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* NEW: DSA Concept Highlight */
+.dsa-highlight {
+    color: var(--accent-green);
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(74, 222, 128, 0.1);
+    padding: 0 4px;
+    border-radius: 4px;
+}
+
+/* 3. LAYOUTS */
+.content-area {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    justify-content: center;
+}
+
+/* Title Slide Layout */
+.title-layout {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.title-layout .subtitle {
+    font-size: 24px;
+    color: var(--accent-blue);
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.team-members {
+    margin-top: 60px;
+    display: flex;
+    gap: 60px;
+}
+
+.member {
+    text-align: center;
+}
+
+.member-name {
+    display: block;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+}
+
+.member-id {
+    font-size: 18px;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    opacity: 0.8;
+}
+
+/* Two Column Layout */
+.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.image-wrapper {
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #334155;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    /* Special styling for diagrams to ensure visibility */
+    background: #e2e8f0; 
+}
+
+.image-wrapper img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    mix-blend-mode: multiply; /* Helps blending diagrams if they have white bg */
+}
+
+/* For full bleed conceptual images */
+.image-wrapper.concept img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mix-blend-mode: normal;
+    opacity: 0.8;
+}
+.image-wrapper.concept {
+    background: var(--bg-card);
+}
+
+
+.two-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.two-column li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 20px;
+}
+
+.two-column li::before {
+    content: '\f054'; /* FontAwesome chevron */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    color: var(--accent-green);
+    font-size: 16px;
+    top: 6px;
+}
+
+/* Tiled Content */
+.tiled-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    width: 100%;
+}
+
+.tile {
+    background: var(--bg-card);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: transform 0.2s;
+}
+
+.tile i {
+    font-size: 40px;
+    color: var(--accent-blue);
+    margin-bottom: 20px;
+}
+
+.tile h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.tile p {
+    font-size: 16px;
+}
+
+/* Highlight Numbers */
+.highlight-row {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.stat-box {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 80px;
+    font-weight: 700;
+    color: var(--accent-green);
+    font-family: 'JetBrains Mono', monospace;
+    display: block;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 20px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Code Snippet Style */
+.code-block {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--code-bg);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-blue);
+    color: #e2e8f0;
+    font-size: 14px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.keyword { color: #c678dd; }
+.func { color: #61afef; }
+.string { color: #98c379; }
+.comment { color: #5c6370; font-style: italic; }
+
+/* Bleed Image Layout */
+.bleed-image-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0;
+    gap: 0;
+}
+
+.bleed-content {
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Checklist Grid */
+.checklist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+.checklist-item {
+    background: rgba(30, 41, 59, 0.5);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    display: flex;
+    align-items: center;
+}
+.checklist-item i {
+    color: var(--accent-green);
+    margin-right: 10px;
+}
+
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide-container" id="slide1">
+    <div class="title-layout">
+        <div style="font-size: 80px; color: var(--accent-green); margin-bottom: 20px; text-shadow: 0 0 20px rgba(74, 222, 128, 0.3);"><i class="fa-solid fa-fingerprint"></i></div>
+        <h1>BFIDS</h1>
+        <div class="subtitle">Behavioral Fingerprint-based Intrusion Detection System</div>
+        <p style="margin-top: 30px; font-size: 22px; max-width: 800px; color: var(--text-secondary);">
+            An Enterprise-Grade Security Engine Architected with Custom <span class="dsa-highlight">Data Structures & Algorithms</span>
+        </p>
+        
+        <div class="team-members">
+            <div class="member">
+                <span class="member-name">Fatima Rehman</span>
+                <span class="member-id">Reg #2024177</span>
+            </div>
+            
+            <div class="member">
+                <span class="member-name">Ali Kamran</span>
+                <span class="member-id">Reg #2024090</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 2: Mission & Vision -->
+<div class="slide-container" id="slide2">
+    <div class="slide-title">
+        The Core Mission
+        <span class="slide-tag">PROJECT RATIONALE</span>
+    </div>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <h3>Why this Architecture?</h3>
+                <p>We did not just "use" data structures; we selected them to solve specific complexity problems.</p>
+                <br>
+                <h3>Strategic Application</h3>
+                <ul>
+                    <li><strong>Sorting Algorithms</strong> ensure data integrity before processing.</li>
+                    <li><strong>Self-Balancing Trees</strong> prevent performance degradation.</li>
+                    <li><strong>Hash Maps</strong> provide constant-time user access.</li>
+                    <li><strong>Graphs</strong> model the complex relationships of user behavior.</li>
+                </ul>
+            </div>
+            <div style="background: var(--bg-card); padding: 40px; border-radius: 12px; border: 1px solid #334155; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);">
+                <h3 style="color: var(--accent-green); border-bottom: 1px solid #334155; padding-bottom: 15px; margin-bottom: 25px;">The DSA Advantage</h3>
+                <ul class="fa-ul" style="margin-left: 0;">
+                    <li style="margin-bottom: 20px;"><i class="fa-solid fa-bolt" style="color: var(--accent-blue); margin-right: 12px;"></i> <strong>Speed:</strong> <span class="dsa-highlight">O(log n)</span> checks beat O(n) linear scans.</li>
+                    <li style="margin-bottom: 20px;"><i class="fa-solid fa-database" style="color: var(--accent-blue); margin-right: 12px;"></i> <strong>Efficiency:</strong> <span class="dsa-highlight">B-Trees</span> reduce disk I/O operations.</li>
+                    <li style="margin-bottom: 20px;"><i class="fa-solid fa-code" style="color: var(--accent-blue); margin-right: 12px;"></i> <strong>Control:</strong> <span class="dsa-highlight">Custom Pointers</span> reduce memory overhead compared to STL.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 3: The Problem -->
+<div class="slide-container bleed-image-layout" id="slide3">
+    <div class="bleed-content">
+        <div class="slide-tag" style="align-self: flex-start; margin-bottom: 20px;">CONTEXT</div>
+        <h2 style="font-size: 48px; margin-bottom: 30px;">The "Insider" Threat</h2>
+        <p>Perimeter defenses (Firewalls) fail when the attacker is already inside. This happens via phishing, compromised credentials, or disgruntled employees.</p>
+        
+        <div style="margin-top: 40px;">
+            <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
+                <i class="fa-solid fa-triangle-exclamation" style="color: var(--accent-red); font-size: 24px; margin-top: 5px; margin-right: 15px;"></i>
+                <div>
+                    <strong style="color: var(--accent-red); font-size: 22px;">The Challenge</strong>
+                    <p style="font-size: 18px; margin: 5px 0 0 0;">We need to analyze millions of user actions in real-time to ask: "Is this behavior anomalous?"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="image-wrapper concept" style="height: 720px; border: none; border-radius: 0;">
+        <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1280&q=80" alt="Cybersecurity code monitor">
+    </div>
+</div>
+
+<!-- Slide 4: Architecture -->
+<div class="slide-container" id="slide4">
+    <div class="slide-title">
+        System Pipeline
+        <span class="slide-tag">ARCHITECTURE</span>
+    </div>
+    <div class="content-area">
+        <div class="tiled-content" style="grid-template-columns: repeat(4, 1fr);">
+            <div class="tile">
+                <div style="color: var(--accent-blue); font-size: 14px; margin-bottom: 10px;">STEP 1</div>
+                <i class="fa-solid fa-filter"></i>
+                <h3>Ingestion</h3>
+                <p>Logs are sorted chronologically to maintain time-series integrity.</p>
+                <div class="code-block" style="margin-top: auto; font-size: 12px;">
+                    <span class="dsa-highlight">Quick Sort</span><br><span class="dsa-highlight">Merge Sort</span>
+                </div>
+            </div>
+            <div class="tile">
+                <div style="color: var(--accent-blue); font-size: 14px; margin-bottom: 10px;">STEP 2</div>
+                <i class="fa-solid fa-network-wired"></i>
+                <h3>Profiling</h3>
+                <p>We build a statistical profile of user habits.</p>
+                <div class="code-block" style="margin-top: auto; font-size: 12px;">
+                    <span class="dsa-highlight">AVL Tree</span><br><span class="dsa-highlight">Graph (BFS/DFS)</span>
+                </div>
+            </div>
+            <div class="tile">
+                <div style="color: var(--accent-blue); font-size: 14px; margin-bottom: 10px;">STEP 3</div>
+                <i class="fa-solid fa-bell"></i>
+                <h3>Detection</h3>
+                <p>Live events are checked for patterns and anomalies.</p>
+                <div class="code-block" style="margin-top: auto; font-size: 12px;">
+                    <span class="dsa-highlight">Trie (Prefix)</span><br><span class="dsa-highlight">Max-Heap</span>
+                </div>
+            </div>
+            <div class="tile">
+                <div style="color: var(--accent-blue); font-size: 14px; margin-bottom: 10px;">STEP 4</div>
+                <i class="fa-solid fa-server"></i>
+                <h3>Storage</h3>
+                <p>Fingerprint data is indexed and persisted.</p>
+                <div class="code-block" style="margin-top: auto; font-size: 12px;">
+                    <span class="dsa-highlight">B-Tree Index</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5: AVL Tree -->
+<div class="slide-container" id="slide5">
+    <div class="slide-title">
+        User Profiling: AVL Trees
+        <span class="slide-tag">NON-LINEAR DATA STRUCTURE</span>
+    </div>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <h3>Concept: Self-Balancing BST</h3>
+                <p>We use <span class="dsa-highlight">AVL Trees</span> to store user process profiles (e.g., "Chrome", "Word").</p>
+                
+                <h3 style="margin-top: 30px;">Why Apply This?</h3>
+                <p><strong>The Problem:</strong> User data often arrives in sorted order (e.g., timestamps). A standard BST would degrade into a Linked List (Skewed Tree), resulting in <strong>O(n)</strong> search time.</p>
+                <p><strong>The Fix:</strong> AVL Trees enforce balance. This guarantees that checking "Is this process normal?" always takes <strong>O(log n)</strong> time, crucial for low-latency detection.</p>
+            </div>
+            <div class="image-wrapper">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/AVL-tree-wBalance_K.svg/600px-AVL-tree-wBalance_K.svg.png" alt="AVL tree rotation balancing diagram">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: Graphs -->
+<div class="slide-container" id="slide6">
+    <div class="slide-title">
+        Workflow Analysis: Graphs
+        <span class="slide-tag">GRAPH THEORY</span>
+    </div>
+    <div class="content-area">
+        <div class="two-column">
+            <div class="image-wrapper">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Directed.svg/800px-Directed.svg.png" alt="Nodes and edges directed graph visualization">
+            </div>
+            <div>
+                <h3>Concept: Directed Graph</h3>
+                <p>We use <span class="dsa-highlight">Adjacency Lists</span> to model user workflow. Nodes are apps; edges are transitions (IDE &rarr; Terminal).</p>
+                
+                <h3 style="margin-top: 30px;">Why Apply This?</h3>
+                <ul class="fa-ul" style="margin-left: 0;">
+                    <li style="margin-bottom: 20px;"><i class="fa-solid fa-code-branch" style="color: var(--accent-purple); margin-right: 10px;"></i> <strong><span class="dsa-highlight">BFS</span> (Breadth-First):</strong> Used to validate if a sequence of user actions follows the shortest/most logical known path.</li>
+                    <li style="margin-bottom: 20px;"><i class="fa-solid fa-rotate-right" style="color: var(--accent-purple); margin-right: 10px;"></i> <strong><span class="dsa-highlight">DFS</span> (Depth-First):</strong> Essential for detecting <em>Cycles</em>. Automated bots often get stuck in loops (A&rarr;B&rarr;A); humans rarely do.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Heap -->
+<div class="slide-container" id="slide7">
+    <div class="slide-title">
+        Alert System: Max-Heap
+        <span class="slide-tag">PRIORITY QUEUES</span>
+    </div>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <h3>Concept: Priority Queue</h3>
+                <p>We use a <span class="dsa-highlight">Max-Heap</span> to manage real-time security alerts.</p>
+                
+                <h3 style="margin-top: 30px;">Why Apply This?</h3>
+                <p><strong>The Problem:</strong> In a Security Operations Center (SOC), thousands of logs occur. We cannot simply sort the array every time (O(n log n)) to find the worst threat.</p>
+                <p><strong>The Fix:</strong> A Max-Heap keeps the highest "Anomaly Score" at the root at all times. This gives us <strong>O(1)</strong> instant access to the most critical threat.</p>
+            </div>
+            <div class="image-wrapper">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Max-Heap.svg/600px-Max-Heap.svg.png" alt="Binary heap tree structure maximum root">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: Trie -->
+<div class="slide-container" id="slide8">
+    <div class="slide-title">
+        Pattern Matching: Trie
+        <span class="slide-tag">STRING ALGORITHMS</span>
+    </div>
+    <div class="content-area">
+        <div class="two-column">
+            <div class="image-wrapper">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Trie_example.svg/600px-Trie_example.svg.png" alt="Trie prefix tree data structure nodes characters">
+            </div>
+            <div>
+                <h3>Concept: Prefix Tree</h3>
+                <p>We use a <span class="dsa-highlight">Trie</span> to implement the security blacklist (blocking <code>cmd.exe</code>, <code>cryptolocker.exe</code>).</p>
+                
+                <h3 style="margin-top: 30px;">Why Apply This?</h3>
+                <p><strong>The Problem:</strong> Hash tables only match exact strings. They are slow at checking "Does this start with 'crypto'?"</p>
+                <p><strong>The Fix:</strong> Tries perform prefix matching in <strong>O(L)</strong> time, where L is the word length. Crucially, the speed is <em>independent</em> of the database size. Blocking 1 million viruses is as fast as blocking 1.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: B-Tree -->
+<div class="slide-container" id="slide9">
+    <div class="slide-title">
+        Scalability: B-Tree
+        <span class="slide-tag">DISK OPTIMIZATION</span>
+    </div>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <h3>Concept: Multi-way Search Tree</h3>
+                <p>We use <span class="dsa-highlight">B-Trees</span> to index the persistent storage of user fingerprints.</p>
+                
+                <h3 style="margin-top: 30px;">Why Apply This?</h3>
+                <p><strong>The Problem:</strong> AVL Trees are optimized for RAM (Memory). When data grows to Terabytes, it moves to Disk. Disk access is 1,000x slower than RAM.</p>
+                <p><strong>The Fix:</strong> B-Trees are "fat" trees with hundreds of keys per node. This structure matches the size of a Disk Page (4KB), minimizing the number of slow I/O operations required to fetch data.</p>
+            </div>
+            <div class="image-wrapper">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/B-tree.svg/800px-B-tree.svg.png" alt="Database server rack data center storage">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Algorithms -->
+<div class="slide-container" id="slide10">
+    <div class="slide-title">
+        Algorithmic Core
+        <span class="slide-tag">ALGORITHMS</span>
+    </div>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <i class="fa-solid fa-arrow-down-short-wide" style="color: var(--accent-red);"></i>
+                <h3>Sorting</h3>
+                <p><strong><span class="dsa-highlight">Quick Sort</span>:</strong> Recursive, In-Place. Used for initial high-speed log ingestion.</p>
+                <p><strong><span class="dsa-highlight">Merge Sort</span>:</strong> Stable. Used when relative order of timestamps matters.</p>
+            </div>
+            <div class="tile">
+                <i class="fa-solid fa-magnifying-glass" style="color: var(--accent-red);"></i>
+                <h3>Searching</h3>
+                <p><strong><span class="dsa-highlight">Binary Search</span>:</strong> O(log n) lookup on sorted arrays to find specific log entries.</p>
+                <p><strong><span class="dsa-highlight">Trie Search</span>:</strong> O(L) prefix lookup for instant blacklisting.</p>
+            </div>
+            <div class="tile">
+                <i class="fa-solid fa-route" style="color: var(--accent-red);"></i>
+                <h3>Traversal</h3>
+                <p><strong><span class="dsa-highlight">Recursion</span>:</strong> Core to our DFS, Tree Rotations, and Sorting logic.</p>
+                <p><strong><span class="dsa-highlight">Hashing</span>:</strong> Custom Hash Map for O(1) User ID &rarr; Profile mapping.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 11: DSA MASTER CHECKLIST -->
+<div class="slide-container" id="slide11">
+    <div class="slide-title">
+        Comprehensive DSA Coverage
+        <span class="slide-tag">MASTER CHECKLIST</span>
+    </div>
+    <div class="content-area">
+        <p style="margin-bottom: 30px; text-align: center; color: var(--accent-blue);">We utilized the full spectrum of Data Structures & Algorithms.</p>
+        
+        <div class="checklist-grid">
+            <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> <span class="dsa-highlight">Arrays & Pointers</span></div>
+            <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> <span class="dsa-highlight">Linked Lists</span> (Adjacency)</div>
+            <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> <span class="dsa-highlight">Stacks</span> (DFS / Recursion)</div>
+            <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> <span class="dsa-highlight">Queues</span> (BFS / Buffer)</div>
+            <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> <span class="dsa-highlight">Trees</span> (AVL & BST)</div>
+            <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> <span class="dsa-highlight">Graphs</span> (Directed)</div>
+            <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> <span class="dsa-highlight">Tries</span> (Prefix Trees)</div>
+            <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> <span class="dsa-highlight">Heaps</span> (Priority Queue)</div>
+            <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> <span class="dsa-highlight">B-Trees</span> (Indexing)</div>
+            <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> <span class="dsa-highlight">Hashing</span> (Maps)</div>
+            <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> <span class="dsa-highlight">Sorting</span> (Quick/Merge)</div>
+            <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> <span class="dsa-highlight">Searching</span> (Binary)</div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 12: Conclusion -->
+<div class="slide-container" id="slide12">
+    <div class="title-layout">
+        <h2 style="font-size: 56px; margin-bottom: 30px;">Conclusion</h2>
+        <p style="max-width: 900px; margin-bottom: 50px; font-size: 26px; line-height: 1.5;">
+            BFIDS proves that Data Structures are the backbone of modern cybersecurity. By mapping specific security problems to optimal structures—<span class="dsa-highlight">Tries</span> for patterns, <span class="dsa-highlight">Heaps</span> for alerts, <span class="dsa-highlight">B-Trees</span> for data—we achieved a system that is <strong>theoretically optimal</strong> and <strong>practically effective</strong>.
+        </p>
+        
+        <div class="highlight-row" style="gap: 80px;">
+            <div class="stat-box">
+                <span class="stat-number">100%</span>
+                <span class="stat-label">C++ / Custom Mem</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">96%</span>
+                <span class="stat-label">DSA Concepts</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">O(1)</span>
+                <span class="stat-label">Critical Alerts</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

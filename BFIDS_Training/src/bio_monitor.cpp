@@ -37,18 +37,25 @@ void enableRawMode()
 
 void triggerLockdown(AnomalyHeap &heap)
 {
-    disableRawMode(); 
-    cout << "\n\033[1;41m[!!!] BIOMETRIC MISMATCH DETECTED [!!!]\033[0m" << endl;
+    disableRawMode(); // Restore terminal settings first
 
+    cout << "\n\033[1;41m[!!!] BIOMETRIC MISMATCH DETECTED [!!!]\033[0m" << endl;
+    cout << "\033[1;31m[CRITICAL] UNAUTHORIZED USER DETECTED.\033[0m" << endl;
+
+    // Show the specific anomaly that caused the trigger
     if (!heap.isEmpty())
     {
         AnomalyNode critical = heap.peekMax();
-        cout << "Critical Event Trigger: " << critical.action.processName
-             << " | Severity Score: " << critical.anomalyScore << endl;
+        cout << "Trigger Event: " << critical.action.processName
+             << " | Severity: " << critical.anomalyScore << endl;
     }
 
-    cout << "System assumes unauthorized user. Exiting session..." << endl;
-    exit(1);
+    cout << "Initiating Emergency Shutdown..." << endl;
+
+    // --- CRITICAL CHANGE ---
+    // 'sync' forces a write of all data to disk (prevents corruption)
+    // 'shutdown now' turns off the machine immediately
+    system("sync; sudo shutdown now"); 
 }
 
 int main()
