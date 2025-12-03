@@ -86,6 +86,3 @@ sudo ./bio_monitor
       * **Violent Mouse:** Yank the mouse violently.
 
 **Result:** The **Threat Level** will rise. If it hits **20**, the system triggers a **VM SHUTDOWN**.
-
-```
-```
