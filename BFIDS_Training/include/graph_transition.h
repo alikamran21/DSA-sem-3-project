@@ -1,36 +1,31 @@
 #ifndef GRAPH_TRANSITION_H
 #define GRAPH_TRANSITION_H
 
-#include <iostream>
 #include <string>
 #include <vector>
+#include <unordered_map>
+#include <unordered_set>
+#include <iostream>
+#include <queue>
+#include <stack>
+
 using namespace std;
-
-struct Edge {
-    string from;
-    string to;
-    Edge* next;
-
-    Edge(const string& f, const string& t)
-        : from(f), to(t), next(nullptr) {}
-};
 
 class GraphTransition {
 private:
-    Edge** adjacencyList;  
-    int bucketCount;
-
-    int hash(const string& key) const;
+    // Adjacency list: State -> List of next possible States
+    unordered_map<string, vector<string>> adjList;
 
 public:
-    GraphTransition(int buckets = 30);
-    ~GraphTransition();
-
-    void addTransition(const string& from, const string& to);
-
-    bool isValidTransition(const string& from, const string& to);
-
-    void displayGraph() const;
+    GraphTransition();
+    
+    // Core Graph Operations
+    void addTransition(const string& fromState, const string& toState);
+    bool isValidTransition(const string& fromState, const string& toState);
+    
+    // Traversal Algorithms (New Implementation)
+    void bfs(const string& startNode); // Breadth-First Search
+    void dfs(const string& startNode); // Depth-First Search
 };
 
 #endif

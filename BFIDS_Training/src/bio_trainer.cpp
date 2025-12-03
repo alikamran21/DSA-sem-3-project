@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <cmath>
 #include <chrono>
+#include <string>
 
 // --- EXISTING INCLUDES ---
 #include "avl_profile.h"
@@ -31,8 +32,17 @@ void enableRawMode() {
 
 int main() {
     cout << "--- BIOMETRIC TRAINING PHASE (SSH MODE) ---" << endl;
+    
+    // [MODIFICATION] Ask for Username
+    string username;
+    cout << "Enter username for training (e.g., admin): ";
+    cin >> username;
+    
+    // Clear input buffer to prevent 'Enter' from being registered as a keystroke
+    cin.ignore(); 
+
     cout << "Note: Mouse dynamics are disabled in SSH mode." << endl;
-    cout << "Initializing systems..." << endl;
+    cout << "Initializing systems for user: [" << username << "]..." << endl;
 
     AVLProfile profile;
 
@@ -68,7 +78,8 @@ int main() {
             profile.insertOrUpdate("Keystroke_Dynamics", latency);
 
             // --- INTEGRATION: Log to Queue and Stack ---
-            UserAction act("TrainerUser", "KeyPress", "SSH_Keyboard", latency);
+            // [MODIFICATION] Use dynamic username
+            UserAction act(username, "KeyPress", "SSH_Keyboard", latency);
             eventQueue.enqueueAction(act);
             eventStack.pushAction(act);
         }
@@ -85,8 +96,11 @@ int main() {
     cout << "Total Events Stacked: " << eventStack.getSize() << endl;
 
     cout << "Saving Profile..." << endl;
-    profile.exportToCSV("bio_fingerprints.csv");
-    cout << "Saved to 'bio_fingerprints.csv'." << endl;
+    
+    // [MODIFICATION] Save to user-specific file
+    string filename = "bio_fingerprints_" + username + ".csv";
+    profile.exportToCSV(filename);
+    cout << "Saved to '" << filename << "'." << endl;
 
     return 0;
 }

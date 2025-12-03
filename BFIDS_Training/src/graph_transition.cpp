@@ -1,72 +1,86 @@
 #include "graph_transition.h"
+#include <algorithm>
 
-int GraphTransition::hash(const string& key) const {
-    long long h = 0;
-    for (char c : key)
-        h = (h * 31 + c) % bucketCount;
-    return (int)h;
+GraphTransition::GraphTransition() {}
+
+void GraphTransition::addTransition(const string& fromState, const string& toState) {
+    adjList[fromState].push_back(toState);
 }
 
-GraphTransition::GraphTransition(int buckets) {
-    bucketCount = buckets;
-    adjacencyList = new Edge*[bucketCount];
-
-    for (int i = 0; i < bucketCount; i++)
-        adjacencyList[i] = nullptr;
-}
-
-GraphTransition::~GraphTransition() {
-    for (int i = 0; i < bucketCount; i++) {
-        Edge* e = adjacencyList[i];
-        while (e) {
-            Edge* temp = e;
-            e = e->next;
-            delete temp;
-        }
+bool GraphTransition::isValidTransition(const string& fromState, const string& toState) {
+    if (adjList.find(fromState) == adjList.end()) return false;
+    
+    const vector<string>& neighbors = adjList[fromState];
+    for (const string& neighbor : neighbors) {
+        if (neighbor == toState) return true;
     }
-    delete[] adjacencyList;
-}
-
-void GraphTransition::addTransition(const string& from, const string& to) {
-    int index = hash(from);
-
-    Edge* curr = adjacencyList[index];
-    while (curr) {
-        if (curr->from == from && curr->to == to)
-            return; 
-        curr = curr->next;
-    }
-
-    Edge* newEdge = new Edge(from, to);
-    newEdge->next = adjacencyList[index];
-    adjacencyList[index] = newEdge;
-
-    cout << "[Graph] Learned transition: " << from << " → " << to << endl;
-}
-
-bool GraphTransition::isValidTransition(const string& from, const string& to) {
-    int index = hash(from);
-
-    Edge* curr = adjacencyList[index];
-    while (curr) {
-        if (curr->from == from && curr->to == to)
-            return true;
-        curr = curr->next;
-    }
-
     return false;
 }
 
-void GraphTransition::displayGraph() const {
-    cout << "\n--- Transition Graph ---\n";
-    for (int i = 0; i < bucketCount; i++) {
-        Edge* curr = adjacencyList[i];
-        if (!curr) continue;
-        cout << "[" << i << "]: ";
-        while (curr) {
-            cout << "(" << curr->from << " → " << curr->to << ") ";
-            curr = curr->next;
-        }
-        cout << endl;
+// --- BFS Implementation (Queue Based) ---
+// Used to explore reachable states level-by-level (e.g., Immediate threats vs distant threats)
+void GraphTransition::bfs(const string& startNode) {
+    if (adjList.find(startNode) == adjList.end()) {
+        cout << "[BFS] Start node '" << startNode << "' not found in graph." << endl;
+        return;
     }
+
+    unordered_set<string> visited;
+    queue<string> q;
+
+    visited.insert(startNode);
+    q.push(startNode);
+
+    cout << "[BFS Traversal]: ";
+    while (!q.empty()) {
+        string current = q.front();
+        q.pop();
+        cout << current << " -> ";
+
+        // Visit all neighbors
+        for (const string& neighbor : adjList[current]) {
+            if (visited.find(neighbor) == visited.end()) {
+                visited.insert(neighbor);
+                q.push(neighbor);
+            }
+        }
+    }
+    cout << "END" << endl;
+}
+
+// --- DFS Implementation (Stack Based) ---
+// Used to explore deep transition paths (e.g., verifying if a fatal state is reachable)
+void GraphTransition::dfs(const string& startNode) {
+    if (adjList.find(startNode) == adjList.end()) {
+        cout << "[DFS] Start node '" << startNode << "' not found in graph." << endl;
+        return;
+    }
+
+    unordered_set<string> visited;
+    stack<string> s;
+
+    s.push(startNode);
+
+    cout << "[DFS Traversal]: ";
+    while (!s.empty()) {
+        string current = s.top();
+        s.pop();
+
+        if (visited.find(current) == visited.end()) {
+            cout << current << " -> ";
+            visited.insert(current);
+
+            // Push neighbors to stack
+            // We iterate in reverse to ensure the first neighbor is processed first (standard DFS behavior)
+            if (adjList.find(current) != adjList.end()) {
+                const vector<string>& neighbors = adjList[current];
+                for (auto it = neighbors.rbegin(); it != neighbors.rend(); ++it) {
+                    if (visited.find(*it) == visited.end()) {
+                        s.push(*it);
+                    }
+                }
+            }
+        }
+    }
+    cout << "END" << endl;
 }

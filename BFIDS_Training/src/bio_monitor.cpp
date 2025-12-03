@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <termios.h>
+#include <string>
 
 // --- EXISTING INCLUDES ---
 #include "avl_profile.h"
@@ -14,13 +15,13 @@
 #include "graph_transition.h"
 
 // --- NEW INTEGRATIONS ---
-#include "anomaly_heap.h" // [NEW] For prioritizing threats
-#include "process_trie.h" // [NEW] For blacklisting processes
+#include "anomaly_heap.h" 
+#include "process_trie.h" 
 
 using namespace std;
 using namespace std::chrono;
 
-const int ANOMALY_LIMIT = 100; // FIXED: Increased limit
+const int ANOMALY_LIMIT = 50;
 
 // Terminal handling
 struct termios orig_termios;
@@ -36,10 +37,9 @@ void enableRawMode()
 
 void triggerLockdown(AnomalyHeap &heap)
 {
-    disableRawMode(); // Restore terminal
+    disableRawMode(); 
     cout << "\n\033[1;41m[!!!] BIOMETRIC MISMATCH DETECTED [!!!]\033[0m" << endl;
 
-    // [INTEGRATION] Show the most severe anomaly that caused the crash
     if (!heap.isEmpty())
     {
         AnomalyNode critical = heap.peekMax();
@@ -53,49 +53,62 @@ void triggerLockdown(AnomalyHeap &heap)
 
 int main()
 {
-    // --- INTEGRATION: Utils & Pointer Check ---
     cout << "System started at: " << currentTime() << endl;
     PointerUtils::showMemoryUsage();
 
-    // 1. Load Biometric Profile
+    // --- 1. ASK FOR USER IDENTITY ---
+    string targetUser;
+    cout << "Enter username to monitor: ";
+    cin >> targetUser;
+    cin.ignore(); 
+
+    // --- 2. LOAD PROFILE ---
+    string filename = "bio_fingerprints_" + targetUser + ".csv";
     AVLProfile validProfile;
-    if (!validProfile.importFromCSV("bio_fingerprints.csv"))
+    
+    if (!validProfile.importFromCSV(filename))
     {
-        cerr << "Error: No biometric profile found. Run bio_trainer first!" << endl;
+        cerr << "Error: No biometric profile found for user '" << targetUser << "'." << endl;
+        cerr << "Please run bio_trainer and train as '" << targetUser << "' first." << endl;
         return 1;
     }
 
-    // --- INTEGRATION: Data Structures ---
     hashTable userRegistry(10);
-    userRegistry.addProfile("TargetUser", &validProfile);
+    userRegistry.addProfile(targetUser, &validProfile);
 
+    // --- 3. GRAPH STATE MACHINE (UPDATED) ---
     arrayHandler anomalyLog;
     GraphTransition sysState;
-    sysState.addTransition("Safe", "Anomaly");
+    
+    // Define Security States
+    sysState.addTransition("Safe", "Warning");
+    sysState.addTransition("Warning", "Anomaly");
     sysState.addTransition("Anomaly", "Lockdown");
+    sysState.addTransition("Warning", "Safe"); // Recovery path
+    
     string currentState = "Safe";
 
-    // [NEW] Initialize Anomaly Heap for prioritized threat detection
-    AnomalyHeap threatQueue(50);
+    cout << "\n[System] Verifying Security State Graph Integrity..." << endl;
+    sysState.bfs("Safe"); // Verify reachability using BFS
+    sysState.dfs("Safe"); // Verify paths using DFS
+    cout << "[System] Graph verified.\n" << endl;
 
-    // [NEW] Initialize Process Trie for background process security
+    AnomalyHeap threatQueue(50);
     ProcessTrie blacklistedProcesses;
     blacklistedProcesses.insert("keylogger");
     blacklistedProcesses.insert("wireshark");
-    blacklistedProcesses.insert("netcat");
-    cout << "[System] Background Process Monitor Active (Trie Loaded)." << endl;
 
     UserActionProfile keyStats;
-    AVLProfile *activeProfile = userRegistry.getProfile("TargetUser");
-    bool hasKeys = activeProfile->search("Keystroke_Dynamics", keyStats);
-
-    if (!hasKeys)
+    AVLProfile *activeProfile = userRegistry.getProfile(targetUser);
+    
+    if (!activeProfile->search("Keystroke_Dynamics", keyStats))
     {
-        cerr << "Error: No keystroke data found in fingerprint." << endl;
+        cerr << "Error: No keystroke data found in fingerprint for " << targetUser << "." << endl;
         return 1;
     }
 
     cout << "--- BIOMETRIC LIVE MONITORING (SSH MODE) ---" << endl;
+    cout << "Monitoring User: " << targetUser << endl;
     cout << "Avg Key Latency: " << keyStats.avgDuration << "ms" << endl;
     cout << "Start typing to verify identity... (ESC to quit)" << endl;
 
@@ -103,90 +116,70 @@ int main()
 
     char c;
     auto lastKeyTime = high_resolution_clock::now();
-    double totalSeverity = 0; // Accumulator for heap logic
+    double totalSeverity = 0; 
     bool firstKey = true;
 
     while (read(STDIN_FILENO, &c, 1) == 1)
     {
-        if (c == 27)
-            break; // ESC to quit
+        if (c == 27) break; 
 
         auto now = high_resolution_clock::now();
         double latency = duration_cast<milliseconds>(now - lastKeyTime).count();
         lastKeyTime = now;
 
-        if (!firstKey && latency < 5000) // FIXED: Ignore pauses > 5s
+        if (!firstKey && latency < 5000) 
         {
-            // Check limits (Allowing 0.3x to 3.0x deviation)
             if (latency < keyStats.avgDuration * 0.3 || latency > keyStats.avgDuration * 3.0)
             {
-
-                // Calculate severity based on how far off it is
                 double rawSeverity = abs(latency - keyStats.avgDuration) / 10.0;
-                double cappedSeverity = (rawSeverity > 5.0) ? 5.0 : rawSeverity; // Max penalty is 5
+                double cappedSeverity = (rawSeverity > 5.0) ? 5.0 : rawSeverity;
                 totalSeverity += cappedSeverity;
 
                 cout << "\r\033[31m[!] Anomaly: " << (int)latency << "ms (Sev: " << (int)cappedSeverity << ")\033[0m   " << flush;
 
-                // --- INTEGRATION: Anomaly Heap ---
-                // We create a temporary UserAction to store in the heap
                 UserAction abnormalEvent;
+                abnormalEvent.userID = targetUser;
                 abnormalEvent.processName = "Keystroke_Violation";
                 abnormalEvent.duration = latency;
 
-                // FIXED: Used cappedSeverity instead of undefined 'severity'
                 threatQueue.insert(abnormalEvent, cappedSeverity); 
                 anomalyLog.addTask("KeyAnomaly_" + to_string((int)latency) + "ms");
 
-                // --- INTEGRATION: Process Trie (Simulation) ---
-                if (blacklistedProcesses.searchPrefix("keylog"))
-                {
-                    // Simulated hit
-                }
-
-                // --- INTEGRATION: Pointer Check ---
                 void *ptr = PointerUtils::allocate(sizeof(int), "AnomalyFlag");
                 if (PointerUtils::isValidPointer(ptr))
                     PointerUtils::deallocate(ptr, "AnomalyFlag");
             }
             else
             {
-                // Print Green OK
                 cout << "\r\033[32m[OK] Match: " << (int)latency << "ms      \033[0m" << flush;
-                // Decay severity over time if behavior normalizes
-                if (totalSeverity > 0)
-                    totalSeverity -= 0.5;
+                if (totalSeverity > 0) totalSeverity -= 0.5;
             }
         }
         firstKey = false;
 
-        // C. CHECK HEAP STATE & TRANSITIONS
+        // --- GRAPH STATE LOGIC ---
+        // If threats exist, transition Safe -> Warning -> Anomaly
         if (!threatQueue.isEmpty())
         {
-            if (currentState == "Safe" && sysState.isValidTransition("Safe", "Anomaly"))
-            {
+            if (currentState == "Safe" && sysState.isValidTransition("Safe", "Warning"))
+                currentState = "Warning";
+            else if (currentState == "Warning" && sysState.isValidTransition("Warning", "Anomaly"))
                 currentState = "Anomaly";
-            }
         }
         else
         {
-            currentState = "Safe";
+             // Recovery logic
+             if (currentState == "Warning" && sysState.isValidTransition("Warning", "Safe"))
+                currentState = "Safe";
         }
 
-        // Trigger lockdown if the cumulative severity or single high threat is too high
         if (totalSeverity >= ANOMALY_LIMIT)
         {
-            if (sysState.isValidTransition(currentState, "Lockdown"))
+            if (sysState.isValidTransition(currentState, "Lockdown") || currentState == "Anomaly")
             {
                 disableRawMode();
-                cout << "\n\n[CRITICAL] Anomaly Threshold Exceeded!" << endl;
-                cout << "Dumping Heap (Top Threats):" << endl;
-
-                // Peek at the highest threat from the heap
-                AnomalyNode top = threatQueue.peekMax();
-                cout << "-> Max Threat: " << top.action.processName << " | Score: " << top.anomalyScore << endl;
-
-                anomalyLog.showTaskList();
+                cout << "\n\n[CRITICAL] Anomaly Threshold Exceeded for user " << targetUser << "!" << endl;
+                cout << "State Transitioned: " << currentState << " -> Lockdown" << endl;
                 triggerLockdown(threatQueue);
             }
         }
