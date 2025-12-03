@@ -25,12 +25,7 @@ This folder contains the source code for the training subsystems and the live bi
 This system utilizes the core DSA libraries (Linked List, Merge Sort, AVL Tree).
 
 ```bash
-g++ src/train_system.cpp \
-    src/file_io.cpp \
-    src/linked_list.cpp \
-    src/avl_profile.cpp \
-    src/sorting_algorithms.cpp \
-    -o train_system
+g++ -I include src/train_system.cpp src/file_io.cpp src/linked_list.cpp src/avl_profile.cpp src/sorting_algorithms.cpp src/utils.cpp -o train_system
 ````
 
 ### 2. Compile the Biometric Tools (Hardware Activity)
@@ -40,13 +35,13 @@ This part compiles the biometric trainer and monitor, which interact directly wi
 #### Compile Trainer
 
 ```bash
-g++ src/bio_trainer.cpp src/avl_profile.cpp -o bio_trainer
+g++ -I include src/bio_trainer.cpp src/avl_profile.cpp src/queue_monitor.cpp src/stack_monitor.cpp src/utils.cpp -o bio_trainer
 ```
 
 #### Compile Monitor
 
 ```bash
-g++ src/bio_monitor.cpp src/avl_profile.cpp -o bio_monitor
+g++ -I include src/bio_monitor.cpp src/avl_profile.cpp src/Array_handler.cpp src/pointer_utils.cpp src/utils.cpp src/hash_profiles.cpp src/graph_transition.cpp -o bio_monitor
 ```
 
 ---
