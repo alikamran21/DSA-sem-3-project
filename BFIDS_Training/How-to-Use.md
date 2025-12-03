@@ -1,8 +1,8 @@
-#  BFIDS Training & Monitoring Module
+# BFIDS Training & Monitoring Module
 
 The **BFIDS Training Module** is the learning engine of the intrusion detection system. It analyzes raw data—both system logs and real-time physical interactions—to construct a "normal" behavioral profile (Fingerprint) for the user.
 
-##  Module Overview
+## Module Overview
 
 This folder contains the source code for the training subsystems and the live biometric monitor:
 
@@ -14,38 +14,34 @@ This folder contains the source code for the training subsystems and the live bi
 
 ---
 
-##  Setup & Compilation
+## Setup & Compilation
 
 ### Prerequisites
-* **Folder:** Copy only the `BFIDS_training` into the linix
 * **OS:** Linux (Required for `bio_trainer` and `bio_monitor` due to `<termios.h>`).
 * **Permissions:** `sudo` access is required to read hardware events from `/dev/input/`.
 
-### 1. Compile the Log Trainer (System Activity)
-This system utilizes the core DSA libraries (Linked List, Merge Sort, AVL Tree).
+### 1. Identify Input Devices
+You may need to know your keyboard and mouse event handlers.
 
 ```bash
-g++ -I include src/train_system.cpp src/file_io.cpp src/linked_list.cpp src/avl_profile.cpp src/sorting_algorithms.cpp src/utils.cpp -o train_system
+cat /proc/bus/input/devices
 ````
 
-### 2. Compile the Biometric Tools (Hardware Activity)
+  * **Keyboard:** Look for `Handlers=sysrq kbd event<X>` (e.g., `event1`).
+  * **Mouse:** Look for `Handlers=mouse0 event<Y>` (e.g., `event2`).
+  * **Note:** Remember these event numbers.
 
-This part compiles the biometric trainer and monitor, which interact directly with hardware interfaces and require the AVL profile logic.
-
-#### Compile Trainer
-
-```bash
-g++ -I include src/bio_trainer.cpp src/avl_profile.cpp src/queue_monitor.cpp src/stack_monitor.cpp src/utils.cpp -o bio_trainer
-```
-
-#### Compile Monitor
+### 2\. Permissions to Make the script executable.
 
 ```bash
-g++ -I include src/bio_monitor.cpp src/avl_profile.cpp src/Array_handler.cpp src/pointer_utils.cpp src/utils.cpp src/hash_profiles.cpp src/graph_transition.cpp -o bio_monitor
+chmod +x compile.sh
 ```
 
----
+### 3\. Running the compliation
 
+```bash
+./compile.sh
+```
 ## Usage Guide
 
 ### Phase 1: Training Biometrics
@@ -58,11 +54,11 @@ Run the trainer with `sudo`:
 sudo ./bio_trainer
 ```
 
-**Interact:**
+**Instructions:**
 
-* **Type:** Type normally on the keyboard (e.g., write a sentence).
-* **Move:** Move the mouse around the screen.
-* **Stop:** Press `ESC` to finish training.
+1.  **Type:** Type normally for **30 seconds**.
+2.  **Move:** Move your mouse around in **circles**.
+3.  **Stop:** Press `ESC` to finish training.
 
 **Result:** A `bio_fingerprints.csv` file is generated containing your behavioral averages.
 
@@ -78,7 +74,18 @@ sudo ./bio_monitor
 
 **Test Scenarios:**
 
-* **Normal Behavior:** Type and move normally. You should see green `[OK]` messages.
-* **Simulate Attack:** Mash keys very fast or type extremely slowly (e.g., 1 key per second).
+  * **Normal Behavior:**
 
-**Result:** The anomaly score will rise. If it exceeds the threshold, the system triggers a **SHUTDOWN/LOCKOUT** alert.
+      * Type normally.
+      * **Result:** You should see `[OK] Key match` messages.
+
+  * **Simulate an Intruder:**
+
+      * **Mash Keys:** Start mashing keys incredibly fast (like a script).
+      * **Slow Typing:** Type painfully slow (like someone who doesn't know the layout).
+      * **Violent Mouse:** Yank the mouse violently.
+
+**Result:** The **Threat Level** will rise. If it hits **20**, the system triggers a **VM SHUTDOWN**.
+
+```
+```
