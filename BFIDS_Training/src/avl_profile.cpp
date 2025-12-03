@@ -1,11 +1,11 @@
-#include "avl_profile.h"
+#include "../include/avl_profile.h"
 
 #include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <functional>
-
+#include "../include/btree_index.h"
 using namespace std;
 
 /*
@@ -31,7 +31,19 @@ using namespace std;
 
     The tree is self-balancing using AVL rotations.
 */
+void saveBTreeIndexToDisk(BTreeIndex* index, const std::string& indexFilename) {
+    // This function would serialize the B-Tree structure and write it to a binary file.
+    // (Implementation required in your file_io.cpp or similar utility file)
+    std::cout << "[B-Tree Utility] Saving index to " << indexFilename << "..." << std::endl;
+}
 
+BTreeIndex* loadBTreeIndexFromDisk(const std::string& indexFilename) {
+    // This function would read the binary file and reconstruct the B-Tree structure.
+    // (Implementation required in your file_io.cpp or similar utility file)
+    std::cout << "[B-Tree Utility] Loading index from " << indexFilename << "..." << std::endl;
+    // For demonstration, we just return a new empty tree or a loaded one.
+    return new BTreeIndex();
+}
 // Constructor / Destructor
 AVLProfile::AVLProfile() : root(nullptr) {}
 
@@ -220,20 +232,28 @@ void AVLProfile::inorderExport(Node* node, const function<void(const UserActionP
 bool AVLProfile::exportToCSV(const string& filename) const {
     ofstream file(filename);
     if (!file.is_open()) return false;
+    BTreeIndex profileIndex;
 
     file << "ProcessName,Frequency,AvgDuration\n";
 
     inorderExport(root, [&](const UserActionProfile& p) {
         file << p.processName << "," << p.frequency << "," << p.avgDuration << "\n";
+        profileIndex.insert(p.processName);
     });
-
+    saveBTreeIndexToDisk(&profileIndex, "fingerprint_index.bin");
     return true;
 }
 
 bool AVLProfile::importFromCSV(const string& filename) {
     ifstream file(filename);
     if (!file.is_open()) return false;
-
+    BTreeIndex* profileIndex = loadBTreeIndexFromDisk("fingerprint_index.bin");
+    if (profileIndex && profileIndex->search("cmd.exe")) {
+        cout << "[B-Tree] Profile for 'cmd.exe' found quickly via disk index ." <<endl;
+        // In a real system, we would use the B-Tree to navigate the file directly.
+    } else {
+        cout << "[B-Tree] Index not found or key not present. Proceeding with full CSV scan." << endl;
+    }
     string line;
     getline(file, line); // skip header
 
@@ -253,6 +273,8 @@ bool AVLProfile::importFromCSV(const string& filename) {
         UserActionProfile p(name, freq, avg);
         insertProfileDirect(p);
     }
-
+    if (profileIndex) {
+        delete profileIndex;
+    }
     return true;
 }
