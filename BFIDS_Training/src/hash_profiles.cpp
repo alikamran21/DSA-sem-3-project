@@ -1,7 +1,18 @@
 #include "hash_profiles.h"
 
-// Hash Function
-// FIXED: Now loops through the entire string before returning
+/*
+    hash_profiles.cpp
+    -----------------
+    Implements a Hash Table with Chaining for collision resolution.
+    Used for fast O(1) retrieval of user profiles by UserID.
+*/
+
+/*
+    hashFunction
+    ------------
+    Computes a hash index for a given string key.
+    Uses a polynomial rolling hash strategy.
+*/
 int hashTable::hashFunction(const string& key) const {
     long long hash = 0;
     for (char c : key) {
@@ -29,14 +40,17 @@ hashTable::~hashTable() {
             delete temp; 
             // Note: We do NOT delete profilePtr here as the AVL tree 
             // might be managed/allocated elsewhere in your main system.
-            // If the hash table owns the memory, add: delete temp->profilePtr;
         }
     }
     delete[] table;
 }
 
-// Add Profile
-// FIXED: 'const' typo and missing '<<' in cout
+/*
+    addProfile
+    ----------
+    Inserts a new profile pointer into the hash table.
+    Handles collisions using linked list chaining (add at head).
+*/
 void hashTable::addProfile(const string& userId, AVLProfile* profilePtr) {
     int index = hashFunction(userId);
 
@@ -47,8 +61,12 @@ void hashTable::addProfile(const string& userId, AVLProfile* profilePtr) {
     cout << "[hashTable] Added profile for: " << userId << " at index " << index << endl;
 }
 
-// Get Profile
-// FIXED: Correct return type and comparison logic
+/*
+    getProfile
+    ----------
+    Retrieves the AVLProfile associated with a UserID.
+    Returns nullptr if the user is not found.
+*/
 AVLProfile* hashTable::getProfile(const string& userId) {
     int index = hashFunction(userId);
 
@@ -61,7 +79,11 @@ AVLProfile* hashTable::getProfile(const string& userId) {
     return nullptr;
 }
 
-// Display Table
+/*
+    displayTable
+    ------------
+    Prints the contents of the hash table (buckets and chains).
+*/
 void hashTable::displayTable() const {
     cout << "\n---- Hash Table ----\n";
     for (int i = 0; i < capacity; i++) {

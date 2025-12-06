@@ -8,15 +8,14 @@
 /*
  * AVLProfile
  * ----------
- * Stores the statistical fingerprint in an AVL Tree.
- * Provides:
- *   - insertOrUpdate(): used during training (increment frequency + avgDuration)
- *   - search(): find profile for live detection comparison
- *   - exportToCSV(): save final fingerprint to disk
- *   - importFromCSV(): load fingerprint for live detection mode
+ * Stores the statistical fingerprint in a self-balancing AVL Tree.
+ * * Purpose:
+ * - Training: Efficiently insert new process stats or update existing averages.
+ * - Detection: Fast O(log n) lookups to retrieve expected behavior stats.
+ * - Persistence: Export/Import the tree structure to CSV/Disk.
  *
  * Node stores:
- *   UserActionProfile { processName, frequency, avgDuration }
+ * UserActionProfile { processName, frequency, avgDuration }
  */
 class AVLProfile {
 public:
@@ -66,4 +65,4 @@ private:
     void destroy(Node* node);
 };
 
-#endif 
+#endif

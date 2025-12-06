@@ -2,7 +2,24 @@
 #include <iostream>
 using namespace std;
 
-// Enqueue a new user action (insert at rear)
+/*
+    queue_monitor.cpp
+    -----------------
+    Implements a Queue data structure using a Singly Linked List.
+    
+    This class adheres to the First-In-First-Out (FIFO) principle:
+    - New actions are Enqueued at the Rear.
+    - Old actions are Dequeued from the Front.
+    
+    Used in the BFIDS system to buffer incoming events for sequential processing.
+*/
+
+/*
+    enqueueAction
+    -------------
+    Adds a new UserAction to the rear of the queue.
+    If the queue is empty, both frontNode and rearNode point to the new node.
+*/
 void QueueMonitor::enqueueAction(const UserAction& action) {
     QueueNode* newNode = new QueueNode(action);
     if (rearNode == nullptr) {
@@ -16,7 +33,13 @@ void QueueMonitor::enqueueAction(const UserAction& action) {
     cout << "[ENQUEUE] Added: " << action.action << endl;
 }
 
-// Dequeue the oldest action (delete from front)
+/*
+    dequeueAction
+    -------------
+    Removes the oldest UserAction from the front of the queue.
+    Updates the frontNode pointer to the next node in line.
+    If the queue becomes empty, rearNode is also reset to nullptr.
+*/
 void QueueMonitor::dequeueAction() {
     if (frontNode == nullptr) {
         cout << "[DEQUEUE] Queue is empty. No action to dequeue." << endl;
@@ -33,7 +56,12 @@ void QueueMonitor::dequeueAction() {
     size--;
 }
 
-// Peek at the front action
+/*
+    peekFront
+    ---------
+    Displays the details of the action currently at the front of the queue.
+    Does NOT remove the element.
+*/
 void QueueMonitor::peekFront() const {
     if (frontNode == nullptr) {
         cout << "[PEEK] Queue is empty." << endl;
@@ -45,7 +73,12 @@ void QueueMonitor::peekFront() const {
     }
 }
 
-// Clear all elements (proper memory deallocation)
+/*
+    clearQueue
+    ----------
+    Iteratively removes all nodes from the queue.
+    Ensures all dynamic memory is properly deallocated.
+*/
 void QueueMonitor::clearQueue() {
     QueueNode* curr = frontNode;
     while (curr) {
@@ -58,7 +91,14 @@ void QueueMonitor::clearQueue() {
     cout << "[CLEAR] Queue cleared.\n";
 }
 
-// Copy queue to another QueueMonitor (Deep Copy)
+/*
+    copyTo
+    ------
+    Performs a deep copy of the current queue into a target QueueMonitor object.
+    
+    This ensures that the target queue has its own independent copies of the nodes,
+    preventing issues where modifying one queue affects the other.
+*/
 void QueueMonitor::copyTo(QueueMonitor& target) const {
     if (!target.isEmpty()) {
         target.clearQueue(); // Ensure target is clean

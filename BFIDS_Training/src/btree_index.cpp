@@ -5,6 +5,18 @@
 
 using namespace std;
 
+/*
+    btree_index.cpp
+    ---------------
+    Implements a B-Tree data structure.
+    Optimized for systems that read/write large blocks of data (like disk storage).
+    
+    Key DSA Concepts:
+        - Multi-way Search Tree
+        - Splitting full nodes
+        - Key redistribution
+*/
+
 // --- BTreeNode Implementation ---
 
 BTreeNode::BTreeNode(bool leaf_flag) : n(0), leaf(leaf_flag) {
@@ -15,8 +27,10 @@ BTreeNode::BTreeNode(bool leaf_flag) : n(0), leaf(leaf_flag) {
 // --- BTreeIndex Implementation ---
 
 /*
-    Purpose: Cleans up all dynamically allocated BTreeNodes.
-    DSA Concept: Utilizes **Recursion** and **Pointers** for deep memory cleanup.
+    destroy
+    -------
+    Recursively deletes all nodes in the B-Tree.
+    Used by the destructor to prevent memory leaks.
 */
 void BTreeIndex::destroy(BTreeNode* node) {
     if (!node) return;
@@ -30,8 +44,10 @@ void BTreeIndex::destroy(BTreeNode* node) {
 }
 
 /*
-    Purpose: Inserts a new key (process name) into the B-Tree.
-    DSA Concept: Main function for B-Tree insertion, handles root splitting.
+    insert
+    ------
+    Main interface to insert a key into the B-Tree.
+    Handles the special case where the root is full and needs to split.
 */
 void BTreeIndex::insert(const std::string& k) {
     if (root == nullptr) {
@@ -60,8 +76,11 @@ void BTreeIndex::insert(const std::string& k) {
 }
 
 /*
-    Purpose: Splits a full child node (y) of a non-full parent (x).
-    DSA Concept: Core B-Tree operation using fixed-size **Arrays** to manage keys and pointers.
+    splitChild
+    ----------
+    Splits a full child node (y) into two nodes.
+    Promotes the median key to the parent node (x).
+    Essential for keeping the B-Tree balanced.
 */
 void BTreeIndex::splitChild(BTreeNode* x, int i, BTreeNode* y) {
     BTreeNode* z = new BTreeNode(y->leaf);
@@ -97,8 +116,11 @@ void BTreeIndex::splitChild(BTreeNode* x, int i, BTreeNode* y) {
 }
 
 /*
-    Purpose: Inserts a key into a node that is guaranteed not to be full.
-    DSA Concept: Traverses down the tree using **Recursion** until a leaf is found or a split is triggered.
+    insertNonFull
+    -------------
+    Inserts a key into a node that is not full.
+    Traverses down the tree to finding the correct leaf position.
+    Splits children on the way down if they are full.
 */
 void BTreeIndex::insertNonFull(BTreeNode* x, const std::string& k) {
     int i = x->n - 1;
@@ -132,8 +154,10 @@ void BTreeIndex::insertNonFull(BTreeNode* x, const std::string& k) {
 // ======================= SEARCH IMPLEMENTATION =======================
 
 /*
-    Purpose: Recursively searches for the node containing key 'k'.
-    DSA Concept: **Recursion** and comparison on the array of keys in each node.
+    searchNode
+    ----------
+    Recursively searches the tree for a key.
+    Uses linear search within the node (could be optimized to binary search).
 */
 BTreeNode* BTreeIndex::searchNode(BTreeNode* x, const std::string& k) {
     if (x == nullptr) return nullptr;
@@ -154,6 +178,12 @@ BTreeNode* BTreeIndex::searchNode(BTreeNode* x, const std::string& k) {
     }
 }
 
+/*
+    search
+    ------
+    Public interface for searching a key.
+    Returns true if found, false otherwise.
+*/
 bool BTreeIndex::search(const std::string& k) {
     // This search is O(log_T n), making it ideal for disk-based lookups.
     return searchNode(root, k) != nullptr;

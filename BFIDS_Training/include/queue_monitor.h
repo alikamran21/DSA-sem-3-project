@@ -4,6 +4,20 @@
 #include "user_action.h"
 using namespace std;
 
+/*
+ * QueueMonitor
+ * ------------
+ * Queue implementation (FIFO) using a linked list for action processing.
+ * Provides:
+ * - enqueueAction(): adds an action to the rear
+ * - dequeueAction(): removes an action from the front
+ * - peekFront(): views the front action
+ * - clearQueue(): removes all elements
+ *
+ * Node stores:
+ * QueueNode { UserAction, next }
+ */
+
 // Node structure for linked list implementation of queue
 struct QueueNode {
     UserAction data;
@@ -38,4 +52,4 @@ public:
     size_t getSize() const { return size; }
 };
 
-#endif 
+#endif

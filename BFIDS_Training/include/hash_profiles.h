@@ -7,6 +7,19 @@
 
 using namespace std;
 
+/*
+ * hashTable
+ * ---------
+ * Manages a hash table of user profiles for fast retrieval.
+ * Provides:
+ * - addProfile(): links a User ID to an AVLProfile
+ * - getProfile(): retrieves the AVLProfile for a User ID
+ * - displayTable(): shows the contents of the hash table
+ *
+ * Node stores:
+ * hashNode { userId, profilePtr, next }
+ */
+
 class hashNode {
 public:
     string userId;

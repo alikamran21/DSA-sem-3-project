@@ -11,6 +11,20 @@
 
 using namespace std;
 
+/*
+ * GraphTransition
+ * ---------------
+ * Models state transitions using a directed graph adjacency list.
+ * Provides:
+ * - addTransition(): defines a valid move between states
+ * - isValidTransition(): checks if a move is allowed
+ * - bfs(): performs Breadth-First Search traversal
+ * - dfs(): performs Depth-First Search traversal
+ *
+ * Structure:
+ * Adjacency List { State -> List of next States }
+ */
+
 class GraphTransition {
 private:
     // Adjacency list: State -> List of next possible States

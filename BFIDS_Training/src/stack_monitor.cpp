@@ -3,7 +3,18 @@
 // NOTE: Removed includes for <stack>
 using namespace std;
 
-// Push new user action (LIFO)
+/*
+    stack_monitor.cpp
+    -----------------
+    Implements a Stack data structure using a Linked List (LIFO).
+    Used for backtracking or undo-like operations on user actions.
+*/
+
+/*
+    pushAction
+    ----------
+    Pushes a new action onto the top of the stack.
+*/
 void StackMonitor::pushAction(const UserAction& action) {
     StackNode* newNode = new StackNode(action);
     newNode->next = topNode;
@@ -12,7 +23,12 @@ void StackMonitor::pushAction(const UserAction& action) {
     cout << "[PUSH] Added: " << action.action << endl;
 }
 
-// Pop most recent action
+/*
+    popAction
+    ---------
+    Removes the action from the top of the stack.
+    Checks if stack is empty before popping.
+*/
 void StackMonitor::popAction() {
     if (isEmpty()) {
         cout << "[POP] Stack empty. No action to pop." << endl;
@@ -24,7 +40,12 @@ void StackMonitor::popAction() {
     delete temp;
     size--;
 }
-// Peek at top action
+
+/*
+    peekAction
+    ----------
+    Displays the top action without removing it.
+*/
 void StackMonitor::peekAction() const {
     if (isEmpty()) {
         cout << "[PEEK] Stack empty." << endl;
@@ -36,7 +57,11 @@ void StackMonitor::peekAction() const {
          << " | Status: " << top.status << endl;
 }
 
-// Display all stack contents (non-destructive)
+/*
+    displayAll
+    ----------
+    Traverses the stack from Top to Bottom and displays all elements.
+*/
 void StackMonitor::displayAll() const {
     if (isEmpty()) {
         cout << "[DISPLAY] Stack empty.\n";
@@ -54,7 +79,11 @@ void StackMonitor::displayAll() const {
     cout << endl;
 }
 
-// Clear all actions (proper memory deallocation)
+/*
+    clearStack
+    ----------
+    Removes all nodes from the stack and frees memory.
+*/
 void StackMonitor::clearStack() {
     StackNode* curr = topNode;
     while (curr) {
@@ -67,7 +96,12 @@ void StackMonitor::clearStack() {
     cout << "[CLEAR] Stack cleared.\n";
 }
 
-// Reverse stack order (Standard linked list reversal)
+/*
+    reverseStack
+    ------------
+    Reverses the order of elements in the stack in-place.
+    Useful for analyzing history in chronological vs reverse-chronological order.
+*/
 void StackMonitor::reverseStack() {
     StackNode *prev = nullptr, *curr = topNode, *next = nullptr;
     while (curr != nullptr) {
@@ -80,7 +114,12 @@ void StackMonitor::reverseStack() {
     cout << "[REVERSE] Stack reversed.\n";
 }
 
-// Copy stack to another StackMonitor (Deep Copy for Linked List)
+/*
+    copyTo
+    ------
+    Creates a deep copy of the stack to another StackMonitor.
+    Uses a temporary stack to preserve the order during copying.
+*/
 void StackMonitor::copyTo(StackMonitor& target) const {
     if (!target.isEmpty()) {
         target.clearStack(); // Ensure target is clean

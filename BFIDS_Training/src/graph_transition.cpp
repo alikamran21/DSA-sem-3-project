@@ -1,12 +1,34 @@
 #include "graph_transition.h"
 #include <algorithm>
 
+/*
+    graph_transition.cpp
+    --------------------
+    Implements a Graph using Adjacency Lists.
+    Used to model valid transitions between user states (e.g., Login -> Work -> Logout).
+    
+    Algorithms:
+        - BFS (Breadth-First Search)
+        - DFS (Depth-First Search)
+*/
+
 GraphTransition::GraphTransition() {}
 
+/*
+    addTransition
+    -------------
+    Adds a directed edge from one state to another.
+*/
 void GraphTransition::addTransition(const string& fromState, const string& toState) {
     adjList[fromState].push_back(toState);
 }
 
+/*
+    isValidTransition
+    -----------------
+    Checks if a direct edge exists between two states.
+    Returns true if the transition is allowed.
+*/
 bool GraphTransition::isValidTransition(const string& fromState, const string& toState) {
     if (adjList.find(fromState) == adjList.end()) return false;
     
@@ -17,8 +39,12 @@ bool GraphTransition::isValidTransition(const string& fromState, const string& t
     return false;
 }
 
-// --- BFS Implementation (Queue Based) ---
-// Used to explore reachable states level-by-level (e.g., Immediate threats vs distant threats)
+/*
+    bfs
+    ---
+    Performs Breadth-First Search starting from a node.
+    Explores neighbors level-by-level using a Queue.
+*/
 void GraphTransition::bfs(const string& startNode) {
     if (adjList.find(startNode) == adjList.end()) {
         cout << "[BFS] Start node '" << startNode << "' not found in graph." << endl;
@@ -48,8 +74,12 @@ void GraphTransition::bfs(const string& startNode) {
     cout << "END" << endl;
 }
 
-// --- DFS Implementation (Stack Based) ---
-// Used to explore deep transition paths (e.g., verifying if a fatal state is reachable)
+/*
+    dfs
+    ---
+    Performs Depth-First Search starting from a node.
+    Explores paths deeply using a Stack.
+*/
 void GraphTransition::dfs(const string& startNode) {
     if (adjList.find(startNode) == adjList.end()) {
         cout << "[DFS] Start node '" << startNode << "' not found in graph." << endl;

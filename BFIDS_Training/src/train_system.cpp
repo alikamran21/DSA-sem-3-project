@@ -1,8 +1,8 @@
-#include "linked_list.h"        // From Deliverable 2
-#include "file_io.h"           // From Deliverable 2
+#include "linked_list.h"
+#include "file_io.h"
 
-#include "sorting_algorithms.h" // From Deliverable 3
-#include "avl_profile.h"        // From Deliverable 3
+#include "sorting_algorithms.h"
+#include "avl_profile.h"
 
 #include <iostream>
 #include <string>
@@ -11,10 +11,16 @@
 using namespace std;
 
 /*
-    This program reads the raw user activity log,
-    sorts everything in correct time order,
-    builds a fingerprint using an AVL tree,
-    and finally saves that fingerprint into a CSV file.
+    train_system.cpp
+    ----------------
+    Batch Training Module.
+    Processes raw log files to create a behavioral fingerprint.
+    
+    Process Flow:
+    1. ETL (Extract): Load raw actions from a log file into a Linked List.
+    2. Sort: Convert List to Array and Sort by Timestamp (Merge Sort).
+    3. Train: Insert sorted actions into an AVL Tree to calculate averages/frequencies.
+    4. Export: Save the final fingerprint to CSV.
 */
 
 int main(int argc, char* argv[]) {
@@ -52,10 +58,12 @@ int main(int argc, char* argv[]) {
     }
 
     // Sorting everything by timestamp
+    // Uses Merge Sort O(n log n)
     SortingAlgorithms::mergeSort(arr, 0, count - 1);
     cout << "Actions sorted.\n";
 
     // Building the fingerprint using an AVL tree
+    // Aggregates frequency and calculates running average duration
     AVLProfile fingerprint;
     for (int i = 0; i < count; i++) {
         fingerprint.insertOrUpdate(arr[i].processName, arr[i].duration);

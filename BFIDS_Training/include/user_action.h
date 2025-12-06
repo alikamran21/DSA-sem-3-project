@@ -4,6 +4,19 @@
 #include <ctime>
 using namespace std;
 
+/*
+ * UserAction
+ * ----------
+ * Represents a single user action event.
+ * Used in:
+ * - Logging
+ * - Analysis (Sorting, Stacks, Queues)
+ * - Anomaly Detection
+ *
+ * Fields:
+ * userID, action, processName, duration, timestamp, nextAction, status
+ */
+
 // Defines a structure for tracking a single user action.
 struct UserAction {
     string userID;        // ID of the user.
@@ -22,4 +35,4 @@ struct UserAction {
           timestamp(ts), nextAction(next), status(stat) {} 
 };
 
-#endif 
+#endif

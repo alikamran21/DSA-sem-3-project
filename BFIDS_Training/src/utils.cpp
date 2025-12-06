@@ -1,8 +1,19 @@
 #include "utils.h"
 using namespace std;
 
-// Function: currentTime()
-// Purpose: Get the current system time in a readable string format (like "Sat Oct 18 23:42:00 2025")
+/*
+    utils.cpp
+    ---------
+    General utility functions used across the project.
+*/
+
+/*
+    currentTime
+    -----------
+    Returns the current system time as a readable string.
+    Format example: "Sat Oct 18 23:42:00 2025".
+    Removes the trailing newline added by standard ctime().
+*/
 string currentTime()
 {
     time_t now = time(0);      // Get the current time in seconds

@@ -6,12 +6,14 @@ using namespace std;
 
 /*
  * UserActionProfile
- * ------------------
+ * -----------------
  * Represents the statistical fingerprint for a single process.
- *
  * Used in:
- *  - Training Phase: store frequency + avgDuration
- *  - Live Detection: compare new events vs stored statistics
+ * - Training Phase: store frequency + avgDuration
+ * - Live Detection: compare new events vs stored statistics
+ *
+ * Fields:
+ * processName, frequency, avgDuration
  */
 struct UserActionProfile {
     string processName;   // Key used in the AVL tree

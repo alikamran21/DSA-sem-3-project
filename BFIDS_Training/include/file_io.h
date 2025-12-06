@@ -7,6 +7,20 @@
 #include "linked_list.h"
 using namespace std;
 
+/*
+ * FileIO
+ * ------
+ * Handles file input/output operations for user actions.
+ * Provides:
+ * - saveAction(): appends a single action to a file
+ * - readFile(): reads and displays file content
+ * - saveActionsToFile(): saves a linked list to a file
+ * - loadActionsFromFile(): populates a linked list from a file
+ *
+ * Node stores:
+ * Node { UserAction data, next pointer }
+ */
+
 // Node structure for the basic singly linked list used internally by FileIO.
 struct Node {
     UserAction data;

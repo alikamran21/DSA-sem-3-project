@@ -7,6 +7,20 @@ using namespace std;
 
 const int maxTask = 999 ;
 
+/*
+ * arrayHandler
+ * ------------
+ * Manages a fixed-size array of Task structures.
+ * Provides:
+ * - addTask(): adds a new task description
+ * - removeTask(): removes the last added task
+ * - showTaskList(): displays all current tasks
+ * - clearTask(): resets the task counter
+ *
+ * Struct stores:
+ * Task { id, description, timeStamp }
+ */
+
 struct Task
 {
     int id;

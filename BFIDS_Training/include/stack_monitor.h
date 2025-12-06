@@ -5,6 +5,20 @@
 #include "user_action.h"
 using namespace std;
 
+/*
+ * StackMonitor
+ * ------------
+ * Stack implementation (LIFO) using a linked list.
+ * Provides:
+ * - pushAction(): adds an action to the top
+ * - popAction(): removes an action from the top
+ * - peekAction(): views the top action
+ * - reverseStack(): reverses the order of elements
+ *
+ * Node stores:
+ * StackNode { UserAction, next }
+ */
+
 // Node structure for linked list implementation of stack
 struct StackNode {
     UserAction data;
@@ -40,4 +54,4 @@ public:
     int getSize() const { return size; }
 };
 
-#endif 
+#endif

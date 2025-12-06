@@ -4,9 +4,17 @@
 using namespace std;
 
 /*
-    This merge function joins two sorted halves of the array back together.
-    We sort the UserAction items by timestamp so the fingerprint is built
-    in the correct order of how the user performed actions.
+    sorting_algorithms.cpp
+    ----------------------
+    Implements various sorting algorithms to organize UserActions by timestamp.
+    Includes Merge Sort, Quick Sort, and Heap Sort.
+*/
+
+/*
+    merge
+    -----
+    Helper function for Merge Sort.
+    Merges two sorted subarrays into a single sorted array.
 */
 void SortingAlgorithms::merge(UserAction arr[], size_t left, size_t mid, size_t right) {
 
@@ -60,11 +68,11 @@ void SortingAlgorithms::merge(UserAction arr[], size_t left, size_t mid, size_t 
 }
 
 /*
-    Merge Sort splits the array into two halves,
-    sorts each half, and then merges them.
-
-    We use Merge Sort to make sure all user actions
-    are in correct time order before building the fingerprint.
+    mergeSort
+    ---------
+    Recursive Merge Sort implementation.
+    Divides the array into halves, sorts them, and merges them.
+    Time Complexity: O(n log n).
 */
 void SortingAlgorithms::mergeSort(UserAction arr[], size_t left, size_t right) {
 
@@ -83,11 +91,20 @@ void SortingAlgorithms::mergeSort(UserAction arr[], size_t left, size_t right) {
     // Combine both halves
     merge(arr, left, mid, right);
 }
+
+// Helper swap function
 void swap(UserAction& a, UserAction& b) {
     UserAction temp = a;
     a = b;
     b = temp;
 }
+
+/*
+    partition
+    ---------
+    Helper function for Quick Sort.
+    Selects a pivot and places smaller elements to the left, larger to the right.
+*/
 size_t SortingAlgorithms::partition(UserAction arr[], size_t low, size_t high) {
     // Choose the rightmost element as the pivot (using timestamp for comparison)
     double pivot = arr[high].timestamp;
@@ -106,10 +123,11 @@ size_t SortingAlgorithms::partition(UserAction arr[], size_t low, size_t high) {
 }
 
 /*
-    Purpose: Implements the Quick Sort algorithm.
-    Working: Uses recursion to divide the array based on a pivot returned by 'partition'.
-    DSA Concept: Implementation of Quick Sort (O(n log n) average) and core **Recursion**.
-    Use: Alternative to mergeSort in `bio_trainer.cpp` to sort raw log data.
+    quickSort
+    ---------
+    Recursive Quick Sort implementation.
+    Sorts in-place using partitioning.
+    Time Complexity: O(n log n) average.
 */
 void SortingAlgorithms::quickSort(UserAction arr[], size_t low, size_t high) {
     if (low < high) {
@@ -123,7 +141,12 @@ void SortingAlgorithms::quickSort(UserAction arr[], size_t low, size_t high) {
     }
 }
 
-
+/*
+    heapify
+    -------
+    Maintains the Heap property for a subtree.
+    Used by Heap Sort to build and manage the Max-Heap.
+*/
 void SortingAlgorithms::heapify(UserAction arr[], size_t n, size_t i) {
     size_t largest = i; // Initialize largest as root
     size_t left = 2 * i + 1; // left child index
@@ -144,6 +167,14 @@ void SortingAlgorithms::heapify(UserAction arr[], size_t n, size_t i) {
         heapify(arr, n, largest);
     }
 }
+
+/*
+    heapSort
+    --------
+    Heap Sort implementation.
+    Builds a max heap and repeatedly extracts the maximum element.
+    Time Complexity: O(n log n).
+*/
 void SortingAlgorithms::heapSort(UserAction arr[], size_t n) {
     // 1. Build Max-Heap (rearrange array)
     // Starts heapify from the last non-leaf node up to the root (index 0)

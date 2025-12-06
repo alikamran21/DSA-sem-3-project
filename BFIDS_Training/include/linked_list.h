@@ -1,9 +1,24 @@
- #ifndef LINKED_LIST_H
+#ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
 #include <iostream>
 #include "user_action.h"
 using namespace std;
+
+/*
+ * LinkedList
+ * ----------
+ * Doubly Linked List for managing user session history.
+ * Provides:
+ * - insertAtEnd(): adds action to the tail
+ * - insertAtBeginning(): adds action to the head
+ * - deleteFromEnd(): removes action from the tail
+ * - displayForward/Backward(): prints list contents
+ * - makeCircular(): converts list to circular structure
+ *
+ * Node stores:
+ * ListNode { UserAction, next, prev }
+ */
 
 // Node for Doubly Linked List
 struct ListNode {
@@ -39,4 +54,4 @@ public:
     void traverseCircular(size_t cycles = 1) const;
 };
 
-#endif 
+#endif

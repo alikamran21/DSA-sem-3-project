@@ -1,5 +1,13 @@
 #include "pointer_utils.h"
 
+/*
+    pointer_utils.cpp
+    -----------------
+    Provides custom memory management wrappers.
+    Tracks allocations to help detect memory leaks and invalid accesses.
+    Simulates a basic garbage collector or memory profiler.
+*/
+
 namespace PointerUtils
 {
 
@@ -7,8 +15,12 @@ namespace PointerUtils
     MemoryBlock allocations[100]; // can store up to 100 allocation records
     int allocCount = 0;            // how many allocations are currently active
 
-    // Function: allocate()
-    // Purpose: Custom version of malloc() that keeps track of what you allocate
+    /*
+        allocate
+        --------
+        Custom wrapper for malloc().
+        Logs the allocation size, type, and address.
+    */
     void *allocate(size_t size, const string &type)
     {
         // Try to allocate memory
@@ -31,8 +43,13 @@ namespace PointerUtils
         return ptr;
     }
 
-    // Function: deallocate()
-    // Purpose: Frees memory and removes its record from our tracking list
+    /*
+        deallocate
+        ----------
+        Custom wrapper for free().
+        Removes the record from the tracker and frees memory.
+        Warns if freeing a pointer that wasn't tracked.
+    */
     void deallocate(void *ptr, const string &type)
     {
         // Handle case where user passes a null pointer
@@ -71,8 +88,12 @@ namespace PointerUtils
         free(ptr);
     }
 
-    // Function: isValidPointer()
-    // Purpose: Checks if a pointer is currently in our allocation list
+    /*
+        isValidPointer
+        --------------
+        Checks if a pointer exists in the allocation record.
+        Returns true if the memory is currently allocated.
+    */
     bool isValidPointer(void *ptr)
     {
         if (!ptr)
@@ -87,8 +108,11 @@ namespace PointerUtils
         return false;
     }
 
-    // Function: showMemoryUsage()
-    // Purpose: Display all currently active allocations with details
+    /*
+        showMemoryUsage
+        ---------------
+        Prints a report of all currently allocated memory blocks.
+    */
     void showMemoryUsage()
     {
         cout << "\nMemory Tracker — Current Allocations (" << allocCount << "):\n";
@@ -118,8 +142,11 @@ namespace PointerUtils
         cout << endl;
     }
 
-    // Function: showPointerDetails()
-    // Purpose: Print info about a specific pointer (like a mini inspection tool)
+    /*
+        showPointerDetails
+        ------------------
+        Inspects a specific pointer and prints its status.
+    */
     void showPointerDetails(void *ptr, const string &varName)
     {
         cout << "\nPointer Inspection — " << varName << endl;

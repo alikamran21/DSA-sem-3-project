@@ -8,6 +8,19 @@
 #define ALPHABET_SIZE 26
 
 /*
+ * ProcessTrie
+ * -----------
+ * Trie data structure for efficient prefix searching of process names.
+ * Provides:
+ * - insert(): adds a full process name
+ * - searchPrefix(): checks for known malicious prefixes
+ * - destroy(): recursively clears memory
+ *
+ * Node stores:
+ * TrieNode { children array, isEndOfWord flag }
+ */
+
+/*
  * TrieNode
  */
 struct TrieNode {

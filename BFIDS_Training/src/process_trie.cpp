@@ -5,6 +5,17 @@
 
 using namespace std;
 
+/*
+    process_trie.cpp
+    ----------------
+    Implements a Trie (Prefix Tree) for efficient string searching.
+    Optimized for storing and searching process names or malicious signatures.
+    
+    Complexity:
+        - Insert: O(L) where L is length of string
+        - Search: O(L)
+*/
+
 // --- TrieNode Implementation ---
 
 // Constructor: Initializes the array of children pointers to nullptr
@@ -29,8 +40,10 @@ ProcessTrie::~ProcessTrie() {
 }
 
 /*
-    Purpose: Recursively frees all dynamically allocated TrieNodes.
-    DSA Concept: Utilizes **Recursion** and **Pointers** for memory management.
+    destroy
+    -------
+    Recursively deletes all nodes in the Trie.
+    Recursion ensures children are deleted before parents (post-order).
 */
 void ProcessTrie::destroy(TrieNode* node) {
     if (!node) return;
@@ -45,8 +58,10 @@ void ProcessTrie::destroy(TrieNode* node) {
 }
 
 /*
-    Purpose: Inserts a process name (key) into the Trie.
-    DSA Concept: Iterative traversal and dynamic creation of TrieNodes using **Pointers**.
+    insert
+    ------
+    Inserts a string key into the Trie.
+    Creates new nodes for characters that don't exist yet in the path.
 */
 void ProcessTrie::insert(const std::string& key) {
     TrieNode* curr = root;
@@ -64,8 +79,10 @@ void ProcessTrie::insert(const std::string& key) {
 }
 
 /*
-    Purpose: Searches for a prefix (or full word) in the Trie.
-    DSA Concept: Demonstrates **Searching** complexity proportional to the key length (O(L)).
+    searchPrefix
+    ------------
+    Checks if a given prefix exists in the Trie.
+    Used for fast lookups (e.g., checking if "cmd" matches "cmd.exe").
 */
 bool ProcessTrie::searchPrefix(const std::string& prefix) {
     TrieNode* curr = root;

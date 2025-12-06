@@ -5,23 +5,42 @@
 
 using namespace std;
 
-// Constructor: this runs automatically when a new arrayHandler object is created
-// It sets up memory to store up to 'maxTask' tasks
+/*
+    Array_handler.cpp
+    -----------------
+    Manages a simple fixed-size array of Task structures.
+    This simulates a basic session manager where tasks (actions) are logged sequentially.
+    
+    Features:
+        - Add/Remove tasks
+        - Display history
+        - Clear session
+*/
+
+// Constructor
+// Runs automatically when a new arrayHandler object is created.
+// Allocates memory for the task list.
 arrayHandler::arrayHandler()
 {
     tasks = new Task[maxTask]; // dynamically allocating array of Task objects
     taskCounter = 0;           // keeping track of how many tasks are added
 }
 
-// Destructor: runs automatically when object is destroyed
-// Frees up the memory we manually allocated for 'tasks'
+// Destructor
+// Runs automatically when object is destroyed.
+// Frees the dynamically allocated memory.
 arrayHandler::~arrayHandler()
 {
     delete[] tasks;
 }
 
-// Function: addTask()
-// Purpose: Add a new task to the list with a unique ID and timestamp
+/*
+    addTask
+    -------
+    Adds a new task to the array.
+    Checks for overflow before adding.
+    Assigns a unique ID and current timestamp to the task.
+*/
 void arrayHandler::addTask(const string &description)
 {
     // Stop if we’ve already reached our max limit
@@ -40,8 +59,12 @@ void arrayHandler::addTask(const string &description)
     cout << "Task Added :) " << description << endl;
 }
 
-// Function: removeTask()
-// Purpose: Remove a task from the list using its ID
+/*
+    removeTask
+    ----------
+    Removes a task by its ID.
+    Shifts subsequent tasks to fill the gap (Array Shift Operation).
+*/
 void arrayHandler::removeTask()
 {
     // If there’s nothing to remove
@@ -85,8 +108,11 @@ void arrayHandler::removeTask()
     cout << "Task removed. :)\n";
 }
 
-// Function: showTaskList()
-// Purpose: Display all currently saved tasks
+/*
+    showTaskList
+    ------------
+    Iterates through the array and displays all active tasks.
+*/
 void arrayHandler::showTaskList()
 {
     // If no tasks exist
@@ -107,15 +133,22 @@ void arrayHandler::showTaskList()
     cout << endl;
 }
 
-// Function: getTaskCounter()
-// Purpose: Return how many tasks are currently stored
+/*
+    getTaskCounter
+    --------------
+    Returns the current number of tasks stored.
+*/
 int arrayHandler::getTaskCounter()
 {
     return taskCounter;
 }
 
-// Function: clearTask()
-// Purpose: Erase all tasks at once (like resetting your session)
+/*
+    clearTask
+    ---------
+    Resets the task counter to zero, effectively clearing the session.
+    (Note: Data remains in memory but is considered overwritten).
+*/
 void arrayHandler::clearTask()
 {
     taskCounter = 0;

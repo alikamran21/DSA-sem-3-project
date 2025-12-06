@@ -5,8 +5,18 @@
 #include "user_action.h" // Assumed defined
 
 /*
- * AnomalyNode: Stores an action and its calculated severity score.
+ * AnomalyHeap
+ * -----------
+ * Max-Heap implementation for prioritizing anomaly events.
+ * Provides:
+ * - insert(): adds a new anomaly with a score (O(log n))
+ * - extractMax(): removes and returns the highest priority anomaly
+ * - peekMax(): returns the highest priority anomaly without removal
+ *
+ * Node stores:
+ * AnomalyNode { UserAction, anomalyScore }
  */
+
 struct AnomalyNode {
     UserAction action;
     double anomalyScore; // Higher score means higher priority
@@ -15,10 +25,6 @@ struct AnomalyNode {
     AnomalyNode(const UserAction& a, double score) : action(a), anomalyScore(score) {}
 };
 
-/*
- * AnomalyHeap (Max-Heap)
- * Implemented using a dynamically allocated C-style array.
- */
 class AnomalyHeap {
 private:
     AnomalyNode* heap; // **Raw Array** (Heap storage)
@@ -49,4 +55,4 @@ public:
 };
 
 
-#endif 
+#endif

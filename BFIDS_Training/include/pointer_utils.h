@@ -6,6 +6,20 @@
 #include <iomanip>
 using namespace std;
 
+/*
+ * PointerUtils
+ * ------------
+ * Utilities for memory tracking, allocation, and pointer validation.
+ * Provides:
+ * - allocate(): safe memory allocation with tracking
+ * - deallocate(): safe memory deallocation
+ * - isValidPointer(): checks if address is valid
+ * - showMemoryUsage(): displays current allocations
+ *
+ * Struct stores:
+ * MemoryBlock { address, size, type }
+ */
+
 namespace PointerUtils {
 
     struct MemoryBlock {

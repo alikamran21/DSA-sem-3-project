@@ -6,6 +6,14 @@
 
 using namespace std;
 
+/*
+ * Utils
+ * -----
+ * General utility functions.
+ * Provides:
+ * - currentTime(): returns current timestamp as string
+ */
+
 string currentTime();
 
 #endif

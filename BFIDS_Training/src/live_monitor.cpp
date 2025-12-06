@@ -5,12 +5,30 @@
 
 using namespace std;
 
+/*
+    live_monitor.cpp
+    ----------------
+    A simulation/testing version of the monitoring system.
+    Allows manual entry of actions and durations to test detection logic 
+    without needing real-time biometric hardware/SSH.
+    
+    Features:
+    - Manual data entry simulation.
+    - Anomaly detection based on imported CSV profiles.
+    - Simulated shutdown trigger.
+*/
+
 // CONFIGURATION
 // --- CHANGE: Path updated ---
 const string FINGERPRINT_FILE = "fingerprints/fingerprints.csv";
 const int ANOMALY_THRESHOLD = 10; // High score = Shutdown
 
-// Function to actually shut down the VM
+/*
+    triggerShutdown
+    ---------------
+    Executes the system shutdown command when a threat is confirmed.
+    Requires sudo privileges.
+*/
 void triggerShutdown() {
     cout << "\n[!!!] RED ALERT: MALICIOUS ACTIVITY DETECTED [!!!]" << endl;
     cout << "[!!!] The system is compromised. Initiating EMERGENCY SHUTDOWN." << endl;
@@ -20,6 +38,15 @@ void triggerShutdown() {
     system("sudo shutdown -h now"); 
 }
 
+/*
+    main
+    ----
+    Simulation loop.
+    1. Loads the fingerprint.
+    2. Accepts manual input for Action and Duration.
+    3. Calculates threat score.
+    4. Triggers shutdown if threshold is met.
+*/
 int main() {
     cout << "============================================" << endl;
     cout << "   BFIDS LIVE MONITORING SYSTEM (ACTIVE)    " << endl;

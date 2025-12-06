@@ -11,8 +11,17 @@
 #define MAX_CHILDREN (2 * T)
 
 /*
- * BTreeNode
+ * BTreeIndex
+ * ----------
+ * Implements a B-Tree for efficient indexing and searching of process names.
+ * Provides:
+ * - insert(): adds a key to the index
+ * - search(): checks if a key exists in the index
+ *
+ * Node stores:
+ * BTreeNode { keys[], children[], leaf_flag }
  */
+
 struct BTreeNode {
     // **Fixed-size Array** of keys
     std::string keys[MAX_KEYS];
@@ -26,9 +35,6 @@ struct BTreeNode {
     BTreeNode(bool leaf_flag);
 };
 
-/*
- * BTreeIndex
- */
 class BTreeIndex {
 private:
     BTreeNode* root;

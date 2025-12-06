@@ -4,6 +4,15 @@
 #include <cstddef>
 #include "user_action.h"
 
+/*
+ * SortingAlgorithms
+ * -----------------
+ * Collection of sorting algorithms for UserAction arrays.
+ * Provides:
+ * - mergeSort(): O(n log n) divide and conquer sort
+ * - quickSort(): O(n log n) average case partition sort
+ * - heapSort(): O(n log n) heap-based sort
+ */
 
 class SortingAlgorithms {
 public:
@@ -17,4 +26,4 @@ private:
     static void heapify(UserAction arr[], size_t n, size_t i);
 };
 
-#endif 
+#endif

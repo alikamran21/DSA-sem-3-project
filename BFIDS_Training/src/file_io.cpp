@@ -9,10 +9,22 @@
 
 using namespace std;
 
+/*
+    file_io.cpp
+    -----------
+    Handles all file input/output operations.
+    Includes utilities for saving logs, loading histories, and formatting output.
+    Also handles conversion between Linked Lists and Arrays for sorting.
+*/
+
 // Node constructor defined here as declared in file_io.h
 Node::Node(const UserAction& action) : data(action), next(nullptr) {}
 
-// Append new node at end
+/*
+    appendNode
+    ----------
+    Helper function to append a new node to a raw singly linked list.
+*/
 void appendNode(Node*& head, const UserAction& action) {
     Node* newNode = new Node(action);
     if (!head) { head = newNode; return; }
@@ -27,7 +39,11 @@ bool compareByTimestamp(const UserAction& a, const UserAction& b) {
     return a.timestamp < b.timestamp;
 }
 
-// Utility to clear the linked list nodes
+/*
+    clearLinkedList
+    ---------------
+    Recursively deletes a raw singly linked list to prevent memory leaks.
+*/
 void clearLinkedList(Node*& head) {
     Node* current = head;
     while (current) {
@@ -38,7 +54,14 @@ void clearLinkedList(Node*& head) {
     head = nullptr; // Sets the caller's pointer to nullptr after deallocation
 }
 
-// Save all actions (formatted table + sorted)
+/*
+    saveActionsToFile
+    -----------------
+    Saves a linked list of actions to a file in a formatted table.
+    1. Converts List -> Array.
+    2. Sorts the Array by timestamp.
+    3. Writes formatted output.
+*/
 bool FileIO::saveActionsToFile(Node*& head, const string& filename) {
     if (!head) {
         cerr << "Error: No actions to save!\n";
@@ -117,7 +140,12 @@ bool FileIO::saveActionsToFile(Node*& head, const string& filename) {
     return true;
 }
 
-// Read file and print to console (formatted)
+/*
+    readFile
+    --------
+    Reads a file and dumps its content to the console.
+    Useful for debugging or verification.
+*/
 void FileIO::readFile(const string& filename) {
     ifstream file(filename);
     if (!file.is_open()) {
@@ -134,7 +162,12 @@ void FileIO::readFile(const string& filename) {
     file.close();
 }
 
-// Save a single action entry (unformatted, appended)
+/*
+    saveAction
+    ----------
+    Appends a single user action to a log file.
+    Does NOT overwrite existing data (Append Mode).
+*/
 bool FileIO::saveAction(const UserAction& action, const string& filename) {
     ofstream file(filename, ios::app);
     if (!file.is_open()) {
@@ -154,7 +187,12 @@ bool FileIO::saveAction(const UserAction& action, const string& filename) {
     return true;
 }
 
-// Load actions from file (Separated from saveAction)
+/*
+    loadActionsFromFile
+    -------------------
+    Reads actions from a log file and populates a LinkedList.
+    Parses each line to extract UserAction fields.
+*/
 bool FileIO::loadActionsFromFile(const string& filename, LinkedList& list) {
     ifstream file(filename);
     if (!file.is_open()) {
@@ -171,17 +209,9 @@ bool FileIO::loadActionsFromFile(const string& filename, LinkedList& list) {
         string ignore;
 
         // Assumes format: UserID: U101, Action: Login, ...
-        // We use stringstream to skip labels like "UserID:"
         stringstream ss(line);
         
-        // This simple parsing assumes the file format matches exactly what saveAction produces
-        // or a simple space-separated format. 
-        // Adjust this logic if your input file format is strictly space-separated.
-        
-        string segment;
-        // Simple token extraction (this works best for space separated values)
-        // If your log file has "UserID: U101", we need to skip the label.
-        // Below is a generic parser for space-separated values:
+        // Simple token extraction (works best for space separated values)
         ss >> ua.userID >> ua.action >> ua.processName >> ua.duration >> ua.timestamp >> ua.nextAction >> ua.status;
         
         // If that fails, try the label skipping method:

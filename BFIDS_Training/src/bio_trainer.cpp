@@ -8,7 +8,7 @@
 #include <string>
 #include <cstdlib> // Added for system()
 
-// --- EXISTING INCLUDES ---
+// --- INCLUDES ---
 #include "avl_profile.h"
 #include "queue_monitor.h"
 #include "stack_monitor.h"
@@ -16,13 +16,37 @@
 using namespace std;
 using namespace std::chrono;
 
+/*
+    bio_trainer.cpp
+    ---------------
+    The Training Module for the BFIDS system (SSH Mode).
+    
+    Functionality:
+    1. Captures user keystrokes in real-time.
+    2. Measures flight time (latency) between keys.
+    3. Builds a statistical profile (Average Duration).
+    4. Logs training events to Stack and Queue monitors for analysis.
+    5. Exports the trained profile to a CSV file.
+*/
+
 // Configuration to handle Terminal I/O
 struct termios orig_termios;
 
+/*
+    disableRawMode
+    --------------
+    Resets terminal settings to default.
+*/
 void disableRawMode() {
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios);
 }
 
+/*
+    enableRawMode
+    -------------
+    Enables raw input mode for accurate keystroke timing.
+    Disables canonical mode (wait for Enter) and echo.
+*/
 void enableRawMode() {
     tcgetattr(STDIN_FILENO, &orig_termios);
     atexit(disableRawMode);
@@ -31,6 +55,12 @@ void enableRawMode() {
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
 
+/*
+    main
+    ----
+    Main training loop.
+    Captures input, calculates metrics, updates AVL Tree, and saves data.
+*/
 int main() {
     cout << "--- BIOMETRIC TRAINING PHASE (SSH MODE) ---" << endl;
     
@@ -62,6 +92,7 @@ int main() {
     auto lastKeyTime = high_resolution_clock::now();
     bool firstKey = true;
 
+    // Data Capture Loop
     while (read(STDIN_FILENO, &c, 1) == 1) {
         auto now = high_resolution_clock::now();
         double latency = duration_cast<milliseconds>(now - lastKeyTime).count();
@@ -76,6 +107,7 @@ int main() {
         if (!firstKey && latency < 2000) {
             cout << "\r[KEY] Latency: " << latency << "ms   " << flush; // \r overwrites line
             
+            // Update the statistical model in the AVL Tree
             profile.insertOrUpdate("Keystroke_Dynamics", latency);
 
             // --- INTEGRATION: Log to Queue and Stack ---
@@ -102,6 +134,7 @@ int main() {
     system("mkdir -p fingerprints");
     string filename = "fingerprints/bio_fingerprints_" + username + ".csv";
     
+    // Serialize the AVL Tree to CSV
     profile.exportToCSV(filename);
     cout << "Saved to '" << filename << "'." << endl;
 
