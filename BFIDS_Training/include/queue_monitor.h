@@ -38,4 +38,4 @@ public:
     size_t getSize() const { return size; }
 };
 
-#endif // QUEUE_MONITOR_H
+#endif 

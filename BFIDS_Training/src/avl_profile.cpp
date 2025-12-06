@@ -255,7 +255,7 @@ bool AVLProfile::importFromCSV(const string& filename) {
         cout << "[B-Tree] Index not found or key not present. Proceeding with full CSV scan." << endl;
     }
     string line;
-    getline(file, line); // skip header
+    getline(file, line);
 
     while (getline(file, line)) {
         if (line.empty()) continue;

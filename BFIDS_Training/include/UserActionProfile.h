@@ -2,7 +2,7 @@
 #define USER_ACTION_PROFILE_H
 
 #include <string>
-using namespace std;   // ← added exactly as you requested
+using namespace std;
 
 /*
  * UserActionProfile
@@ -27,4 +27,4 @@ struct UserActionProfile {
           avgDuration(avg) {}
 };
 
-#endif // USER_ACTION_PROFILE_H
+#endif

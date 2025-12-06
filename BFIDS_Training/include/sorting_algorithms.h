@@ -17,4 +17,4 @@ private:
     static void heapify(UserAction arr[], size_t n, size_t i);
 };
 
-#endif /* A88BAFA1_AB72_4A2D_812B_D477C32DA685 */
+#endif 

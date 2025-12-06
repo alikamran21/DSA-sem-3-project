@@ -40,4 +40,4 @@ public:
     int getSize() const { return size; }
 };
 
-#endif // STACK_MONITOR_H
+#endif 

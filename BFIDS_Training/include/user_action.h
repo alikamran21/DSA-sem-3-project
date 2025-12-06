@@ -19,7 +19,7 @@ struct UserAction {
     UserAction(string id = "", string act = "", string proc = "", double dur = 0.0,
                time_t ts = std::time(nullptr), string next = "", string stat = "Normal")
         : userID(id), action(act), processName(proc), duration(dur),
-          timestamp(ts), nextAction(next), status(stat) {} // Renamed 'time' to 'ts'
+          timestamp(ts), nextAction(next), status(stat) {} 
 };
 
-#endif // USER_ACTION_H
+#endif 

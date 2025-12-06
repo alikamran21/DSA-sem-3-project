@@ -39,4 +39,4 @@ public:
     void traverseCircular(size_t cycles = 1) const;
 };
 
-#endif // LINKED_LIST_H
+#endif 

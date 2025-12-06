@@ -3,9 +3,6 @@
 
 #include <string>
 #include <iostream>
-
-// Include the AVL Profile header.
-// This path assumes hash_profiles is in 'Test-A' and avl_profile is in 'Test-F/include'
 #include "avl_profile.h"
 
 using namespace std;
@@ -13,7 +10,7 @@ using namespace std;
 class hashNode {
 public:
     string userId;
-    AVLProfile* profilePtr; // Corrected type: AVLProfile*
+    AVLProfile* profilePtr;
     hashNode* next;
 
     // Constructor: Takes a pointer to an AVLProfile
@@ -23,7 +20,7 @@ public:
 
 class hashTable {
 private:
-    hashNode** table; // Corrected: Array of pointers to hashNodes
+    hashNode** table;
     int capacity;
     
     int hashFunction(const string& key) const;

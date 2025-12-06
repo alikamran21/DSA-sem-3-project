@@ -33,7 +33,7 @@ void enableRawMode() {
 int main() {
     cout << "--- BIOMETRIC TRAINING PHASE (SSH MODE) ---" << endl;
     
-    // [MODIFICATION] Ask for Username
+    // Ask for Username
     string username;
     cout << "Enter username for training (e.g., admin): ";
     cin >> username;
@@ -78,7 +78,7 @@ int main() {
             profile.insertOrUpdate("Keystroke_Dynamics", latency);
 
             // --- INTEGRATION: Log to Queue and Stack ---
-            // [MODIFICATION] Use dynamic username
+            // Use dynamic username
             UserAction act(username, "KeyPress", "SSH_Keyboard", latency);
             eventQueue.enqueueAction(act);
             eventStack.pushAction(act);
@@ -97,7 +97,7 @@ int main() {
 
     cout << "Saving Profile..." << endl;
     
-    // [MODIFICATION] Save to user-specific file
+    //  Save to user-specific file
     string filename = "bio_fingerprints_" + username + ".csv";
     profile.exportToCSV(filename);
     cout << "Saved to '" << filename << "'." << endl;

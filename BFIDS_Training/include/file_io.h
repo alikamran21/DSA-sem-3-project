@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "user_action.h" // Requires UserAction constructor parameter for time_t to be renamed (e.g., from 'time' to 'ts')
+#include "user_action.h"
 #include "linked_list.h"
 using namespace std;
 
@@ -31,4 +31,4 @@ public:
 void appendNode(Node*& head, const UserAction& action);
 
 
-#endif // FILE_IO_H
+#endif
