@@ -6,7 +6,8 @@
 using namespace std;
 
 // CONFIGURATION
-const string FINGERPRINT_FILE = "fingerprints.csv";
+// --- CHANGE: Path updated ---
+const string FINGERPRINT_FILE = "fingerprints/fingerprints.csv";
 const int ANOMALY_THRESHOLD = 10; // High score = Shutdown
 
 // Function to actually shut down the VM

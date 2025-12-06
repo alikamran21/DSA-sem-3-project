@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <string>
+#include <cstdlib> // Added for system()
 
 using namespace std;
 
@@ -19,7 +20,8 @@ using namespace std;
 int main(int argc, char* argv[]) {
 
     string rawLog = "raw_actions.log";
-    string outCsv = "fingerprints.csv";
+    // --- CHANGE: Default path updated ---
+    string outCsv = "fingerprints/fingerprints.csv";
 
     // Allow custom input and output file names
     if (argc >= 2) rawLog = argv[1];
@@ -60,6 +62,9 @@ int main(int argc, char* argv[]) {
     }
 
     cout << "Fingerprint tree created.\n";
+
+    // --- CHANGE: Ensure directory exists ---
+    system("mkdir -p fingerprints");
 
     // Saving the fingerprint to a CSV file
     bool saved = fingerprint.exportToCSV(outCsv);

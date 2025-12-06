@@ -70,7 +70,8 @@ int main()
     cin.ignore(); 
 
     // --- 2. LOAD PROFILE ---
-    string filename = "bio_fingerprints_" + targetUser + ".csv";
+    // --- CHANGE: Look in fingerprints folder ---
+    string filename = "fingerprints/bio_fingerprints_" + targetUser + ".csv";
     AVLProfile validProfile;
     
     if (!validProfile.importFromCSV(filename))

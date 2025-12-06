@@ -6,6 +6,7 @@
 #include <cmath>
 #include <chrono>
 #include <string>
+#include <cstdlib> // Added for system()
 
 // --- EXISTING INCLUDES ---
 #include "avl_profile.h"
@@ -97,8 +98,10 @@ int main() {
 
     cout << "Saving Profile..." << endl;
     
-    //  Save to user-specific file
-    string filename = "bio_fingerprints_" + username + ".csv";
+    // --- CHANGE: Create directory and update path ---
+    system("mkdir -p fingerprints");
+    string filename = "fingerprints/bio_fingerprints_" + username + ".csv";
+    
     profile.exportToCSV(filename);
     cout << "Saved to '" << filename << "'." << endl;
 
